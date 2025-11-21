@@ -1,16 +1,55 @@
-# React + Vite
+# 📌 Social Media Frontend Project
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## **Overview**
+This project is a modern social media frontend built with React and Tailwind CSS.  
+It features user profiles, posts feed, search functionality, and the ability to create posts with images and sales prices.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## **Features**
+- User profile page with editable profile and follow/unfollow functionality  
+- Responsive posts feed with search filter  
+- Add new posts including normal posts and sale posts with image uploads  
+- Sidebar navigation with icons and routing
+- User authentication with Login and Register pages  
+- Real-time chat functionality between users  
+- Responsive design for desktop and mobile  
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## **Tech Stack**
+- React (Functional Components & Hooks)  
+- Tailwind CSS for styling  
+- React Icons for UI icons  
+- React Router for navigation  
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## **Folder Structure**
+src/
+├── components/
+│ ├── Sidebar.jsx
+│ ├── Profile.jsx
+│ ├── PostsList.jsx
+│ └── Post.jsx
+├── pages/
+│ ├── HomePage.jsx
+│ ├── ProfilePage.jsx
+│ └── AddPostPage.jsx
+└── App.jsx
+
+---
+
+## **Run Project**
+
+1. Install dependencies:  
+```bash
+npm install
+
+2. Start the development server:
+npm run dev
+
+3. Open your browser at:
+http://localhost:3000
+
+
