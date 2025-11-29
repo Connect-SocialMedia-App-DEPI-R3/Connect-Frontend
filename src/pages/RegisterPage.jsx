@@ -1,12 +1,183 @@
-import React from 'react';
+import { useState, useMemo } from "react";
+import { Link } from "react-router";
+import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import cute1 from "../assets/cute1.png";
+import cute2 from "../assets/cute2.png";
+import cute3 from "../assets/cute3.png";
+import cute4 from "../assets/cute4.png";
+import cute5 from "../assets/cute5.png";
 
 const RegisterPage = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [idCard, setIdCard] = useState(null);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log({ firstName, lastName, username, email, password, idCard });
+    alert("Registered successfully!");
+    setFirstName("");
+    setLastName("");
+    setUsername("");
+    setEmail("");
+    setPassword("");
+    setIdCard(null);
+  };
+
+  const fallingImages = [cute1, cute2, cute3, cute4, cute5];
+  const numberOfCopies = 6;
+
+  const fallingProps = useMemo(() => {
+    return fallingImages.flatMap((img) =>
+      Array.from({ length: numberOfCopies }).map(() => ({
+        img,
+        left: Math.random() * 100,
+        duration: 6 + Math.random() * 6,
+        rotate: Math.random() * 360,
+        scale: 0.5 + Math.random(),
+        delay: -1,
+      }))
+    );
+  }, []);
+
   return (
-    <div className="container py-4">
-      <h1>Register</h1>
-      <p>Create a new account.</p>
+    <div className="relative min-h-screen flex justify-center items-center bg-gray-100 overflow-hidden p-6 sm:p-10">
+
+      {/* Falling Animated Characters */}
+      <div className="absolute top-0 left-0 w-full h-full pointer-events-none overflow-hidden z-0">
+        {fallingProps.map((props, index) => (
+          <img
+            key={index}
+            src={props.img}
+            alt="cute character"
+            className="absolute"
+            style={{
+              left: `${props.left}%`,
+              width: `${40 * props.scale}px`,
+              height: `${40 * props.scale}px`,
+              animationName: "fall",
+              animationDuration: `${props.duration}s`,
+              animationTimingFunction: "linear",
+              animationIterationCount: "infinite",
+              animationDelay: `${props.delay}s`,
+              transform: `rotate(${props.rotate}deg)`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Register Form */}
+      <div className="relative bg-linear-to-br from-yellow-100 via-pink-100 to-pink-200 rounded-2xl shadow-lg p-6 sm:p-8 w-full max-w-md sm:max-w-lg md:max-w-xl z-10">
+        <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Register</h2>
+
+        <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          <div className="relative">
+            <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+            <input
+              type="text"
+              placeholder="First Name"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+            <input
+              type="text"
+              placeholder="Last Name"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+            <input
+              type="text"
+              placeholder="Username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
+              required
+            />
+          </div>
+
+          <div className="relative">
+            <label className="block text-gray-700 text-sm mb-1">ID Card</label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setIdCard(e.target.files[0])}
+              className="border border-gray-300 rounded-xl p-3 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="bg-linear-to-r from-pink-400 to-yellow-400 text-white font-semibold py-2 rounded-xl shadow-md transition duration-300 hover:scale-105 hover:shadow-pink-200 text-sm sm:text-base"
+          >
+            Register
+          </button>
+
+          <p className="text-sm text-center text-gray-600 mt-2">
+            Already have an account?{" "}
+            <Link to="/login" className="text-pink-500 font-medium">
+              Login
+            </Link>
+          </p>
+        </form>
+      </div>
+
+      {/* Animation CSS */}
+      <style>
+        {`
+          @keyframes fall {
+            0% {
+              transform: translateY(-150vh) rotate(0deg);
+              opacity: 1;
+            }
+            100% {
+              transform: translateY(120vh) rotate(360deg);
+              opacity: 1;
+            }
+          }
+        `}
+      </style>
     </div>
   );
-}
+};
 
 export default RegisterPage;
