@@ -1,9 +1,12 @@
 import { FaRegHeart } from "react-icons/fa6";
 import { FiMessageCircle } from "react-icons/fi";
 
-const Post = ({ post }) => {
+const Post = ({ post, onClick }) => {
   return (
-    <div className="rounded-2xl bg-white shadow p-4 hover:shadow-lg transition">
+    <div
+      onClick={onClick}
+      className="rounded-2xl bg-white shadow p-4 hover:shadow-lg transition cursor-pointer"
+    >
       <div className="flex items-center gap-3 mb-3">
         <img src={post.avatar} alt="User" className="rounded-full w-12 h-12" />
         <div>
@@ -35,3 +38,4 @@ const Post = ({ post }) => {
 };
 
 export default Post;
+

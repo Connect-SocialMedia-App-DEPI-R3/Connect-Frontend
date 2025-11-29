@@ -36,7 +36,7 @@ const Sidebar = () => {
         </button>
         </Link>
 
-        <div className="mt-8 w-full">
+        <div className="mt-4 w-full">
           <ul className="space-y-3 text-gray-700">
             <Link to="/">
             <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
@@ -60,6 +60,12 @@ const Sidebar = () => {
             <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
                <IoIosAddCircleOutline className="text-pink-500 text-2xl"/>
                <span className="font-medium">Add Post</span>
+            </li>
+            </Link>
+            <Link to="/marketplace">
+            <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
+               <IoIosAddCircleOutline className="text-pink-500 text-2xl"/>
+               <span className="font-medium">Marketplace</span>
             </li>
             </Link>
             <hr />

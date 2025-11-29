@@ -5,6 +5,7 @@ import { FaHouse } from "react-icons/fa6";
 import { FaRegHeart } from "react-icons/fa";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import Post from "./Post";
+import { useNavigate } from "react-router";
 
 const PostsList = ({ posts }) => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -16,6 +17,8 @@ const PostsList = ({ posts }) => {
       post.content.toLowerCase().includes(lowerSearch)
     );
   });
+
+  const navigate = useNavigate();
 
   return (
     <div className="posts flex-1 p-10 sm:p-6 md:p-10 flex flex-col gap-8 overflow-y-auto">
@@ -45,7 +48,8 @@ const PostsList = ({ posts }) => {
       <h1 className="font-bold text-xl sm:text-2xl">Feed</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-transparent">
         {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => <Post key={post.id} post={post} />)
+          filteredPosts.map((post) => <Post key={post.id} post={post} onClick={() => navigate(`/posts/${post.id}`)}
+          className="cursor-pointer" />)
         ) : (
           <p className="text-center text-gray-500 col-span-full">No posts found.</p>
         )}

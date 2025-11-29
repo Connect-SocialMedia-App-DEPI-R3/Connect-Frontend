@@ -9,6 +9,8 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import AddPostPage from "./pages/AddPostPage";
 import ProfilePage from "./pages/ProfilePage";
+import MarketplacePage from "./pages/MarketplacePage";
+import PostDetailsPage from "./pages/PostDetailsPage";
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -19,6 +21,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/add-post" element={<AddPostPage />} />
         <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/marketplace" element={<MarketplacePage />} />
+        <Route path="/posts/:id" element={<PostDetailsPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>
