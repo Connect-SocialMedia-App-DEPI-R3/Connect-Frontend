@@ -44,18 +44,22 @@ const Sidebar = () => {
                <span className="font-medium">Feed</span>
             </li>
             </Link>
+            <Link to="/chat">
             <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
                <LuMessageCircleMore className=" text-pink-500 text-2xl"/>
                <span className="font-medium">Direct</span>
             </li>
+            </Link>
             <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
                <FaRegHeart className=" text-pink-500 text-2xl"/>
                <span className="font-medium">Notifications</span>
             </li>
+            <Link to="/settings">
             <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
                <IoSettingsOutline className=" text-pink-500 text-2xl"/>
                <span className="font-medium">Settings</span>
             </li>
+            </Link>
             <Link to="/add-post">
             <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
                <IoIosAddCircleOutline className="text-pink-500 text-2xl"/>
@@ -69,10 +73,12 @@ const Sidebar = () => {
             </li>
             </Link>
             <hr />
+            <Link to="/login">
             <li className="flex items-center gap-3 p-3 rounded-xl hover:bg-white/40 transition cursor-pointer">
                <MdOutlineLogout className=" text-pink-500 text-2xl"/>
                <span className="font-medium">Logout</span>
             </li>
+            </Link>
           </ul>
         </div>
       </div>

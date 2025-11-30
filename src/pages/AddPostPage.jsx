@@ -2,6 +2,7 @@ import { useState } from "react";
 import { MdOutlineSell } from "react-icons/md";
 import { FaRegImage } from "react-icons/fa6";
 import Sidebar from "../components/Sidebar.jsx";
+import toast from "react-hot-toast";
 
 const AddPostPage = () => {
   const [postType, setPostType] = useState("normal");
@@ -24,7 +25,7 @@ const AddPostPage = () => {
       price: postType === "sale" ? price : null,
     };
     console.log("New Post:", newPost);
-    alert("Post added successfully!");
+    toast.success("Post added successfully!");
     setContent("");
     setImage(null);
     setPrice("");

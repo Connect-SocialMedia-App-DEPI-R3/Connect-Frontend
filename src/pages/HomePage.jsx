@@ -9,6 +9,10 @@ const posts = [
     content: "Loving this new platform!",
     image: "src/assets/MyMelody1.webp",
     avatar: "src/assets/MyMelody.jpeg",
+    comments: [
+      { id: 1, author: "Sara", text: "So cute!! 💗" },
+      { id: 2, author: "Mona", text: "Love this!" },
+    ]
   },
   {
     id: 2,
@@ -17,6 +21,10 @@ const posts = [
     content: "Loving this new platform!",
     image: "src/assets/HelloKitty1.jpg",
     avatar: "src/assets/HelloKitty.jpg",
+    comments: [
+      { id: 1, author: "Sara", text: "So cute!! 💗" },
+      { id: 2, author: "Mona", text: "Love this!" },
+    ]
   },
     {
     id: 3,
@@ -25,6 +33,10 @@ const posts = [
     content: "Loving this new platform!",
     image: "src/assets/Cinnamoroll1.jpeg",
     avatar: "src/assets/Cinnamoroll.jpeg",
+    comments: [
+      { id: 1, author: "Sara", text: "So cute!! 💗" },
+      { id: 2, author: "Mona", text: "Love this!" },
+    ]
   },
     {
     id: 4,
@@ -33,6 +45,10 @@ const posts = [
     content: "Loving this new platform!",
     image: "src/assets/Bubbles1.webp",
     avatar: "src/assets/Bubbles.jpeg",
+    comments: [
+      { id: 1, author: "Sara", text: "So cute!! 💗" },
+      { id: 2, author: "Mona", text: "Love this!" },
+    ]
   },
   {
     id: 5,
@@ -41,6 +57,10 @@ const posts = [
     content: "Loving this new platform!",
     image: "src/assets/Kuromi1.jpg",
     avatar: "src/assets/Kuromi.jpg",
+    comments: [
+      { id: 1, author: "Sara", text: "So cute!! 💗" },
+      { id: 2, author: "Mona", text: "Love this!" },
+    ]
   }
 ];
 

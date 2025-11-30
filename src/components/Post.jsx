@@ -1,19 +1,38 @@
+import { useNavigate } from "react-router";
 import { FaRegHeart } from "react-icons/fa6";
 import { FiMessageCircle } from "react-icons/fi";
 
 const Post = ({ post, onClick }) => {
+  const navigate = useNavigate();
+
+  const goToProfile = (e) => {
+    e.stopPropagation(); // عشان click على البروفايل ما يعملش click على البوست كله
+    navigate(`/profile/${post.username}`);
+  };
+
   return (
     <div
       onClick={onClick}
       className="rounded-2xl bg-white shadow p-4 hover:shadow-lg transition cursor-pointer"
     >
       <div className="flex items-center gap-3 mb-3">
-        <img src={post.avatar} alt="User" className="rounded-full w-12 h-12" />
-        <div>
+        
+        {/* الصورة clickable */}
+        <img
+          src={post.avatar}
+          alt="User"
+          className="rounded-full w-12 h-12 cursor-pointer"
+          onClick={goToProfile}
+        />
+
+        {/* الاسم clickable */}
+        <div onClick={goToProfile} className="cursor-pointer">
           <h4 className="font-semibold">{post.username}</h4>
           <p className="text-sm text-gray-500">{post.time}</p>
         </div>
+
       </div>
+
       {post.image && (
         <img
           src={post.image}
@@ -21,6 +40,7 @@ const Post = ({ post, onClick }) => {
           className="rounded-xl w-full mb-3 object-cover aspect-4/3 object-center"
         />
       )}
+
       <p className="text-gray-800 pb-3">{post.content}</p>
 
       <div className="flex justify-around border-t pt-3 text-gray-500">
@@ -28,6 +48,7 @@ const Post = ({ post, onClick }) => {
           <FaRegHeart className="text-xl" />
           <span>Like</span>
         </button>
+
         <button className="flex items-center gap-2 hover:text-pink-500 transition">
           <FiMessageCircle className="text-xl" />
           <span>Comment</span>
@@ -38,4 +59,3 @@ const Post = ({ post, onClick }) => {
 };
 
 export default Post;
-
