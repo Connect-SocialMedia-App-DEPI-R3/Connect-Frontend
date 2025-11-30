@@ -12,10 +12,11 @@ const PostsList = ({ posts }) => {
 
   const filteredPosts = posts.filter((post) => {
     const lowerSearch = searchTerm.toLowerCase();
-    return (
-      post.username.toLowerCase().includes(lowerSearch) ||
-      post.content.toLowerCase().includes(lowerSearch)
-    );
+
+    const username = post.author?.username?.toLowerCase() || "";
+    const content = post.content?.toLowerCase() || "";
+
+    return username.includes(lowerSearch) || content.includes(lowerSearch);
   });
 
   const navigate = useNavigate();
@@ -34,22 +35,30 @@ const PostsList = ({ posts }) => {
           />
         </div>
         <div className="flex items-center gap-3 sm:gap-4">
-            <FaHouse className="text-pink-500 text-2xl cursor-pointer hover:scale-110 transition-transform duration-200" />
-            <FaRegHeart className="text-pink-500 text-2xl cursor-pointer hover:scale-110 transition-transform duration-200" />
-            <Link to="/add-post">
-              <button className="flex items-center gap-2 bg-linear-to-r from-pink-400 to-yellow-400 text-white font-medium px-5 py-2 
-              rounded-xl shadow-md transition duration-300 hover:scale-105 hover:shadow-pink-200 text-sm sm:text-base">
+          <FaHouse className="text-pink-500 text-2xl cursor-pointer hover:scale-110 transition-transform duration-200" />
+          <FaRegHeart className="text-pink-500 text-2xl cursor-pointer hover:scale-110 transition-transform duration-200" />
+          <Link to="/add-post">
+            <button
+              className="flex items-center gap-2 bg-linear-to-r from-pink-400 to-yellow-400 text-white font-medium px-5 py-2 
+              rounded-xl shadow-md transition duration-300 hover:scale-105 hover:shadow-pink-200 text-sm sm:text-base"
+            >
               <IoIosAddCircleOutline className="text-2xl" /> Add Post
             </button>
-            </Link>
-          </div>
+          </Link>
+        </div>
       </div>
 
       <h1 className="font-bold text-xl sm:text-2xl">Feed</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-transparent">
         {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => <Post key={post.id} post={post} onClick={() => navigate(`/posts/${post.id}`)}
-          className="cursor-pointer" />)
+          filteredPosts.map((post) => (
+            <Post
+              key={post.id}
+              post={post}
+              onClick={() => navigate(`/posts/${post.id}`)}
+              className="cursor-pointer"
+            />
+          ))
         ) : (
           <p className="text-center text-gray-500 col-span-full">No posts found.</p>
         )}

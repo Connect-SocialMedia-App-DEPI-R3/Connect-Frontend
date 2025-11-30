@@ -6,8 +6,8 @@ const Post = ({ post, onClick }) => {
   const navigate = useNavigate();
 
   const goToProfile = (e) => {
-    e.stopPropagation(); // عشان click على البروفايل ما يعملش click على البوست كله
-    navigate(`/profile/${post.username}`);
+    e.stopPropagation();     // عشان click على البروفايل ما يعملش click على البوست كله
+    navigate(`/profile/${post.author?.username}`);
   };
 
   return (
@@ -17,25 +17,23 @@ const Post = ({ post, onClick }) => {
     >
       <div className="flex items-center gap-3 mb-3">
         
-        {/* الصورة clickable */}
         <img
-          src={post.avatar}
+          src={post.author?.avatarUrl || "/default-avatar.png"}
           alt="User"
           className="rounded-full w-12 h-12 cursor-pointer"
           onClick={goToProfile}
         />
 
-        {/* الاسم clickable */}
         <div onClick={goToProfile} className="cursor-pointer">
-          <h4 className="font-semibold">{post.username}</h4>
-          <p className="text-sm text-gray-500">{post.time}</p>
+          <h4 className="font-semibold">{post.author?.username || "Unknown"}</h4>
+          <p className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
         </div>
 
       </div>
 
-      {post.image && (
+      {post.imageUrl && (
         <img
-          src={post.image}
+          src={post.imageUrl}
           alt="Post"
           className="rounded-xl w-full mb-3 object-cover aspect-4/3 object-center"
         />

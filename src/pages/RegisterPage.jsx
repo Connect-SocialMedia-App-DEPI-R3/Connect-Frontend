@@ -7,25 +7,38 @@ import cute3 from "../assets/cute3.png";
 import cute4 from "../assets/cute4.png";
 import cute5 from "../assets/cute5.png";
 
+import { api } from "../api/axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
+
 const RegisterPage = () => {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [idCard, setIdCard] = useState(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ firstName, lastName, username, email, password, idCard });
-    alert("Registered successfully!");
-    setFirstName("");
-    setLastName("");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await api.post("/api/auth/register", {
+      username,
+      email,
+      password,
+    });
+
+    toast.success("Registered successfully!");
+
     setUsername("");
     setEmail("");
     setPassword("");
-    setIdCard(null);
-  };
+
+    navigate("/login");
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Registration failed");
+  }
+};
 
   const fallingImages = [cute1, cute2, cute3, cute4, cute5];
   const numberOfCopies = 6;
@@ -74,29 +87,6 @@ const RegisterPage = () => {
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">Register</h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
-          <div className="relative">
-            <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
-            <input
-              type="text"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
-              required
-            />
-          </div>
-
-          <div className="relative">
-            <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
-            <input
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
-              required
-            />
-          </div>
 
           <div className="relative">
             <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
@@ -130,17 +120,6 @@ const RegisterPage = () => {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
-              required
-            />
-          </div>
-
-          <div className="relative">
-            <label className="block text-gray-700 text-sm mb-1">ID Card</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setIdCard(e.target.files[0])}
-              className="border border-gray-300 rounded-xl p-3 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
               required
             />
           </div>

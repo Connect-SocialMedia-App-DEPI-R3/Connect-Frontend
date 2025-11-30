@@ -8,17 +8,39 @@ import cute3 from "../assets/cute3.png";
 import cute4 from "../assets/cute4.png";
 import cute5 from "../assets/cute5.png";
 
+import { api } from "../api/axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
+
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log({ email, password });
-    alert("Logged in successfully!");
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  try {
+    const res = await api.post("/api/auth/login", {
+      email,
+      password,
+    });
+
+    // لو عايزين token
+    if (res.data.token) {
+      localStorage.setItem("token", res.data.token);
+    }
+
+    toast.success("Logged in successfully!");
     setEmail("");
     setPassword("");
-  };
+
+    navigate("/");
+  } catch (err) {
+    toast.error(err.response?.data?.message || "Login failed");
+  }
+};
 
   const fallingImages = [cute1, cute2, cute3, cute4, cute5];
   const numberOfCopies = 6;
