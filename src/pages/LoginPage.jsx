@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
-import { FaEnvelope, FaLock } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 
 import cute1 from "../assets/cute1.png";
 import cute2 from "../assets/cute2.png";
@@ -15,36 +15,36 @@ import { useNavigate } from "react-router";
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await api.post("/api/auth/login", {
-      email,
-      password,
-    });
+    try {
+      const res = await api.post("/api/auth/login", {
+        email,
+        password,
+      });
 
-    // لو عايزين token
-    if (res.data.token) {
-      localStorage.setItem("token", res.data.token);
+      // لو عايزين token
+      if (res.data.token) {
+        localStorage.setItem("token", res.data.token);
+      }
+
+      toast.success("Logged in successfully!");
+      setEmail("");
+      setPassword("");
+
+      navigate("/");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Login failed");
     }
-
-    toast.success("Logged in successfully!");
-    setEmail("");
-    setPassword("");
-
-    navigate("/");
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Login failed");
-  }
-};
+  };
 
   const fallingImages = [cute1, cute2, cute3, cute4, cute5];
   const numberOfCopies = 6;
-
 
   const fallingProps = useMemo(() => {
     return fallingImages.flatMap((img) =>
@@ -107,13 +107,21 @@ const LoginPage = () => {
           <div className="relative">
             <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
               required
             />
+
+            {/* Show/Hide Password Button */}
+            <div
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash className="text-lg" /> : <FaEye className="text-lg" />}
+            </div>
           </div>
 
           <button

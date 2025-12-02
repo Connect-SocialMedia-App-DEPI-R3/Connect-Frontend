@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Sidebar from "../components/Sidebar.jsx";
+import { api } from "../api/axios";
 
 const SettingsPage = () => {
   const [profilePrivacy, setProfilePrivacy] = useState("Public");
@@ -16,10 +17,23 @@ const SettingsPage = () => {
     if (newPass) setPassword(newPass);
   };
 
-  const handleDeleteAccount = () => {
-    if (confirm("Are you sure you want to delete your account?")) {
-      alert("Account deleted!");
-      // هنا ممكن تضيفي لوجيك الحذف الحقيقي
+  const handleDeleteAccount = async () => {
+    if (!confirm("Are you sure you want to delete your account?")) return;
+
+    try {
+      // نرسل DELETE request للـ API
+      await api.delete("/api/profile", {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`
+        }
+      });
+
+      alert("Account deleted successfully!");
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    } catch (err) {
+      console.error("Failed to delete account:", err);
+      alert("Failed to delete account. Please try again.");
     }
   };
 

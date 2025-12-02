@@ -34,7 +34,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/add-post" element={<AddPostPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="/profile/:userId?" element={<ProfilePage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
         <Route path="/posts/:id" element={<PostDetailsPage />} />
 

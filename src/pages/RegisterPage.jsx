@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { Link } from "react-router";
-import { FaEnvelope, FaLock, FaUser } from "react-icons/fa";
+import { FaEnvelope, FaLock, FaUser, FaEye, FaEyeSlash, FaIdBadge } from "react-icons/fa";
 import cute1 from "../assets/cute1.png";
 import cute2 from "../assets/cute2.png";
 import cute3 from "../assets/cute3.png";
@@ -12,33 +12,37 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
 const RegisterPage = () => {
+  const [fullName, setFullName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  try {
-    const res = await api.post("/api/auth/register", {
-      username,
-      email,
-      password,
-    });
+    try {
+      const res = await api.post("/api/auth/register", {
+        fullName,
+        username,
+        email,
+        password,
+      });
 
-    toast.success("Registered successfully!");
+      toast.success("Registered successfully!");
 
-    setUsername("");
-    setEmail("");
-    setPassword("");
+      setFullName("");
+      setUsername("");
+      setEmail("");
+      setPassword("");
 
-    navigate("/login");
-  } catch (err) {
-    toast.error(err.response?.data?.message || "Registration failed");
-  }
-};
+      navigate("/login");
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Registration failed");
+    }
+  };
 
   const fallingImages = [cute1, cute2, cute3, cute4, cute5];
   const numberOfCopies = 6;
@@ -88,6 +92,20 @@ const RegisterPage = () => {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
 
+          {/* Full Name */}
+          <div className="relative">
+            <FaIdBadge className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+            <input
+              type="text"
+              placeholder="Full Name"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
+              required
+            />
+          </div>
+
+          {/* Username */}
           <div className="relative">
             <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
             <input
@@ -100,6 +118,7 @@ const RegisterPage = () => {
             />
           </div>
 
+          {/* Email */}
           <div className="relative">
             <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
             <input
@@ -112,16 +131,23 @@ const RegisterPage = () => {
             />
           </div>
 
+          {/* Password */}
           <div className="relative">
             <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
               required
             />
+            <div
+              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash className="text-lg" /> : <FaEye className="text-lg" />}
+            </div>
           </div>
 
           <button
