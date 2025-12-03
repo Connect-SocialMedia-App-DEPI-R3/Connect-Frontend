@@ -44,10 +44,8 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
-      <Sidebar />
-
-      <div className="flex-1 md:ml-96 p-6 space-y-6">
+    <div className=" bg-gradient-to-br from-pink-50 to-purple-50">
+      <div className="p-6 space-y-6">
         {/* ==== TOP STATS مع أيقونات ==== */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white shadow-lg rounded-2xl p-6 text-center flex flex-col items-center">

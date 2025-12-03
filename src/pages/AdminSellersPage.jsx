@@ -1,6 +1,4 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar.jsx";
-import cute2 from "../assets/cute2.png";
 
 const mockSellers = [
   { id: 1, name: "Seller A", posts: 12, active: true },
@@ -20,10 +18,8 @@ const AdminSellersPage = () => {
   });
 
   return (
-    <div className="flex min-h-screen bg-pink-50">
-      <Sidebar />
-
-      <div className="flex-1 md:ml-96 p-6">
+    <div className=" bg-pink-50">
+      <div className="p-6">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-pink-600">Manage Sellers</h2>
 

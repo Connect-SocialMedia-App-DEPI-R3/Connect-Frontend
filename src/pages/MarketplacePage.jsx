@@ -45,16 +45,13 @@ const marketplacePosts  = [
 ];
 
 
-const HomePage = () => {
+const MarketplacePage = () => {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 md:ml-96">
-        <h1 className="font-bold text-3xl p-6">Marketplace</h1>
-        <PostsList posts={marketplacePosts } />
-      </div>
+    <div className="p-6">
+      <h1 className="font-bold text-3xl p-6">Marketplace</h1>
+      <PostsList posts={marketplacePosts } />
     </div>
   );
 };
 
-export default HomePage;
+export default MarketplacePage;

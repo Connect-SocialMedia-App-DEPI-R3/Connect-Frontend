@@ -91,7 +91,6 @@ const PostsList = ({ posts }) => {
       </div>
 
       {/* ===== Feed ===== */}
-      <h1 className="font-bold text-xl sm:text-2xl">Feed</h1>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-transparent">
         {filteredPosts.length > 0 ? (
           filteredPosts.map((post) => (

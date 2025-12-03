@@ -1,46 +1,78 @@
 import { useState } from "react";
 import { MdOutlineSell } from "react-icons/md";
 import { FaRegImage } from "react-icons/fa6";
-import Sidebar from "../components/Sidebar.jsx";
 import toast from "react-hot-toast";
+import { api } from "../api/axios";
+import { usePosts } from "../hook/usePosts";
 
 const AddPostPage = () => {
   const [postType, setPostType] = useState("normal");
   const [content, setContent] = useState("");
-  const [image, setImage] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
   const [price, setPrice] = useState("");
 
+  const { posts, setPosts } = usePosts(); //  عشان الهوم يتحدث
+
   const handleImageChange = (e) => {
-    const file = e.target.files[0];      // the one user uploaded
-    if (file) setImage(URL.createObjectURL(file));
+    const file = e.target.files[0];
+    if (file) setImageFile(file);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newPost = {
-      id: Date.now(),
-      type: postType,
-      content,
-      image,
-      price: postType === "sale" ? price : null,
-    };
-    console.log("New Post:", newPost);
-    toast.success("Post added successfully!");
-    setContent("");
-    setImage(null);
-    setPrice("");
-    setPostType("normal");
+
+    if (!imageFile) {
+      toast.error("Please upload an image");
+      return;
+    }
+
+    try {
+      // FormData
+      const formData = new FormData();
+      formData.append("title", postType === "sale" ? "Sale Post" : "Post");
+      formData.append("content", content);
+      formData.append("file", imageFile);
+      formData.append("type", postType);
+
+      if (postType === "sale") {
+        formData.append("price", price);
+      }
+
+      // POST request
+      const res = await api.post("/api/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      // Add post locally to update UI
+      setPosts((prev) => [res.data, ...prev]);
+
+      toast.success("Post created successfully!");
+
+      // Reset fields
+      setContent("");
+      setImageFile(null);
+      setPrice("");
+      setPostType("normal");
+
+    } catch (err) {
+      console.error(err);
+      toast.error("Failed to create post");
+    }
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-    <Sidebar />
-    
-    <div className="flex-1 flex justify-center items-center p-6 sm:p-10 overflow-y-auto md:ml-96">
+    <div className="flex-1 flex justify-center items-center p-6 sm:p-10 overflow-y-auto mt-20">
       <div className=" bg-linear-to-br from-yellow-100 via-pink-100 to-pink-200 rounded-2xl shadow-lg p-6 sm:p-8 w-full max-w-md sm:max-w-lg md:max-w-xl">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6 text-center"> Create New Post </h2>
+
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6 text-center">
+          Create New Post
+        </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+
+          {/* Post Type */}
           <div className="flex flex-col sm:flex-row justify-center items-center gap-4 sm:gap-10">
             <label className="flex items-center gap-2 cursor-pointer text-sm sm:text-base">
               <input
@@ -53,6 +85,7 @@ const AddPostPage = () => {
               />
               <FaRegImage className=" text-pink-500 text-lg sm:text-xl"/><span>Normal Post</span>
             </label>
+
             <label className="flex items-center gap-2 cursor-pointer text-sm sm:text-base">
               <input
                 type="radio"
@@ -66,6 +99,7 @@ const AddPostPage = () => {
             </label>
           </div>
 
+          {/* Content */}
           <textarea
             value={content}
             onChange={(e) => setContent(e.target.value)}
@@ -75,6 +109,7 @@ const AddPostPage = () => {
             required
           />
 
+          {/* Image */}
           <div>
             <label className="block mb-2 font-medium text-gray-700 text-sm sm:text-base">
               Upload Image
@@ -86,15 +121,9 @@ const AddPostPage = () => {
               className="block w-full text-gray-700 border border-gray-300 rounded-xl p-2 text-sm sm:text-base"
               required
             />
-            {image && (
-              <img
-                src={image}
-                alt="Preview"
-                className="rounded-xl mt-3 w-full h-56 sm:h-64 object-cover shadow"
-              />
-            )}
           </div>
 
+          {/* Price */}
           {postType === "sale" && (
             <input
               type="number"
@@ -113,8 +142,8 @@ const AddPostPage = () => {
             Post
           </button>
         </form>
+
       </div>
-    </div>
     </div>
   );
 };

@@ -161,10 +161,8 @@ const EditProfilePage = () => {
   const posts = selectedTab === "social" ? socialPosts : marketPosts;
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
-      <Sidebar />
-
-      <div className="flex-1 md:ml-96 p-6">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
+      <div className="p-6">
         <h1 className="text-4xl font-bold mb-6 text-pink-600">Edit Profile</h1>
 
         {/* PROFILE CARD */}

@@ -8,11 +8,9 @@ const HomePage = () => {
   if (loading) return <div className="flex justify-center items-center h-screen">Loading posts...</div>;
 
   return (
-    <div className="flex flex-col md:flex-row min-h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 md:ml-96 p-6">
-        <PostsList posts={posts} />
-      </div>
+    <div className="p-6">
+      <h1 className="font-bold text-xl sm:text-2xl">Feed</h1>
+      <PostsList posts={posts} />
     </div>
   );
 };

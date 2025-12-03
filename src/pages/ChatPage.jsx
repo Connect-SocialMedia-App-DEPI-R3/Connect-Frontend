@@ -93,10 +93,7 @@ const ChatPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
-      <Sidebar />
-
-      <div className="flex-1 md:ml-96 p-6">
+      <div className="p-6">
         <div className="flex flex-col md:flex-row bg-white rounded-2xl shadow-lg min-h-[600px]">
           
           {/* Left Panel */}
@@ -196,7 +193,6 @@ const ChatPage = () => {
               </div>
             )}
           </div>
-        </div>
       </div>
 
       {/* Private Chat Modal */}

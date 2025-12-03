@@ -70,9 +70,7 @@ const PostDetailsPage = () => {
   if (postsLoading || !postWithUrls) return <div className="p-10">Loading post...</div>;
 
   return (
-    <div className="flex min-h-screen bg-gray-100">
-      <Sidebar />
-      <div className="flex-1 md:ml-96 p-6 max-w-4xl mx-auto">
+    <div className=" p-6 max-w-4xl mx-auto">
         <Post post={postWithUrls} detailed={true} />
         {commentsLoading ? (
           <div>Loading comments...</div>
@@ -83,7 +81,6 @@ const PostDetailsPage = () => {
             onDeleteComment={deleteComment}
           />
         )}
-      </div>
     </div>
   );
 };

@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { FaUserPlus, FaUserCheck, FaEdit, FaRegHeart } from "react-icons/fa";
-import { FaHouse } from "react-icons/fa6";
-import { FiMessageCircle } from "react-icons/fi";
+import { useState } from "react";
 import { Link } from "react-router";
-import { api } from "../api/axios"; 
+import PostsList from "../components/PostsList.jsx";
 
+const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
+const defaultAvatar = "src/assets/placeholder_avatar.jpeg";
 
 const Profile = ({ userData, posts, isOwner }) => {
-
-  const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
-  const defaultAvatar = "src/assets/placeholder_avatar.jpeg";
+  const [activeTab, setActiveTab] = useState("social");
 
   if (!userData) {
     return (
@@ -30,10 +27,9 @@ const Profile = ({ userData, posts, isOwner }) => {
     bio: userData.bio,
   };
 
+  // فلترة البوستات حسب التاب
   const socialPosts = posts.filter(p => !p.price);
   const marketPosts = posts.filter(p => p.price);
-
-  const [activeTab, setActiveTab] = useState("social");
   const postsToShow = activeTab === "social" ? socialPosts : marketPosts;
 
   return (
@@ -41,14 +37,13 @@ const Profile = ({ userData, posts, isOwner }) => {
 
       {/* ===== HEADER ===== */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-gray-300 pb-6 mb-6">
-        
         <img
           src={user.avatar}
           alt="Avatar"
           className="rounded-full w-32 h-32 sm:w-36 sm:h-36 border-4 
-             border-transparent 
-             bg-gradient-to-tr from-pink-400 via-yellow-300 to-pink-400 
-             shadow-md shadow-pink-200"
+            border-transparent 
+            bg-gradient-to-tr from-pink-400 via-yellow-300 to-pink-400 
+            shadow-md shadow-pink-200"
         />
 
         <div className="flex-1 flex flex-col text-center sm:text-left">
@@ -61,7 +56,6 @@ const Profile = ({ userData, posts, isOwner }) => {
             <span>{posts.length} Posts</span>
           </div>
 
-          {/* OWN PROFILE */}
           {isOwner ? (
             <Link
               to="/edit-profile"
@@ -100,17 +94,8 @@ const Profile = ({ userData, posts, isOwner }) => {
         </button>
       </div>
 
-      {/* ===== POSTS GRID ===== */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {postsToShow.map((post) => (
-          <div key={post.id} className="bg-white p-5 rounded-2xl shadow-lg">
-            {post.image && (
-              <img src={post.image} className="rounded-xl mb-3 w-full" />
-            )}
-            <p className="text-lg">{post.content}</p>
-          </div>
-        ))}
-      </div>
+      {/* ===== POSTS LIST COMPONENT ===== */}
+      <PostsList posts={postsToShow} />
 
     </div>
   );

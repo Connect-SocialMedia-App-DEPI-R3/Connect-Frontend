@@ -24,20 +24,22 @@ import { Toaster } from "react-hot-toast";
 
 import { UserProvider } from "./context/UserContext";
 
+import Layout from "./layouts/Layout";
+
 createRoot(document.getElementById('root')).render(
   <StrictMode>
     <Toaster position="top-right" />
     <UserProvider>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+      <Route element={<Layout />}>
+        <Route path="/" element={<HomePage />} />
         <Route path="/add-post" element={<AddPostPage />} />
         <Route path="/profile/:userId?" element={<ProfilePage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
         <Route path="/posts/:id" element={<PostDetailsPage />} />
-
         <Route path="/edit-profile" element={<EditProfilePage />} />
         <Route path="/settings" element={<SettingsPage />} /> 
         <Route path="/chat" element={<ChatPage />} />  
@@ -46,7 +48,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/manage_categories" element={<ManageCategoriesPage />} /> 
         <Route path="/Unverified_users" element={<UnverifiedUsersPage />} /> 
         <Route path="/admin_sellers" element={<AdminSellersPage />} /> 
-
+       </Route>
       </Routes>
     </BrowserRouter>
     </UserProvider>

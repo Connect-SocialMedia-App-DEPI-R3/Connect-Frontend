@@ -45,9 +45,8 @@ const ManageCategoriesPage = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-pink-50 to-purple-50">
-      <Sidebar />
-      <div className="flex-1 md:ml-96 p-6 space-y-6">
+    <div className="bg-gradient-to-br from-pink-50 to-purple-50">
+      <div className="p-6 space-y-6">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-pink-600">Manage Categories</h2>
           <div className="flex space-x-2">
