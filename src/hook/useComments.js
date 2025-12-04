@@ -1,10 +1,24 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { commentApi } from "../api";
+import { commentApi, profileApi } from "../api";
 
 export const useComments = (postId) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
+
+  // Fetch current user profile on mount
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const { data } = await profileApi.getMyProfile();
+        setCurrentUser(data);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+      }
+    };
+    fetchCurrentUser();
+  }, []);
 
   const fetchComments = async () => {
     if (!postId) return;
@@ -22,9 +36,20 @@ export const useComments = (postId) => {
   const addComment = async (content) => {
     try {
       const { data } = await commentApi.createComment(postId, content);
-      setComments((prev) => [...prev, data]);
+      
+      // Enrich comment with current user data if author is missing
+      const enrichedComment = {
+        ...data,
+        author: data.author || {
+          id: currentUser?.id,
+          username: currentUser?.username,
+          avatarUrl: currentUser?.avatarUrl,
+        },
+      };
+      
+      setComments((prev) => [...prev, enrichedComment]);
       toast.success("Comment added successfully");
-      return data;
+      return enrichedComment;
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to add comment");
       throw error;

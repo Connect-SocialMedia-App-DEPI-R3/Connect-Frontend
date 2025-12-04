@@ -26,6 +26,7 @@ It features user profiles, posts feed, search functionality, and the ability to 
 ---
 
 ## **Folder Structure**
+```
 src/
 ├── components/
 │ ├── Sidebar.jsx
@@ -37,6 +38,7 @@ src/
 │ ├── ProfilePage.jsx
 │ └── AddPostPage.jsx
 └── App.jsx
+```
 
 ---
 
