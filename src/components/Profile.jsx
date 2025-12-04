@@ -41,7 +41,7 @@ const Profile = ({ userData, posts, isOwner }) => {
           src={user.avatar}
           alt="Avatar"
           className="rounded-full w-32 h-32 sm:w-36 sm:h-36 border-4 
-            border-transparent 
+            border-transparent object-cover
             bg-gradient-to-tr from-pink-400 via-yellow-300 to-pink-400 
             shadow-md shadow-pink-200"
         />
