@@ -142,12 +142,6 @@ const MobileNav = () => {
                 label="Settings"
                 onClick={closeMenu}
               />
-              <MobileNavItem
-                to="/add-post"
-                icon={<IoIosAddCircleOutline />}
-                label="Add Post"
-                onClick={closeMenu}
-              />
 
               <hr className="my-3 border-gray-300/50" />
 

@@ -18,9 +18,9 @@ export const usePosts = () => {
     }
   };
 
-  const createPost = async (content, file) => {
+  const createPost = async (formData) => {
     try {
-      const { data } = await postApi.createPost({ content }, file);
+      const { data } = await postApi.createPost(formData);
       setPosts((prev) => [data, ...prev]);
       toast.success("Post created successfully");
       return data;

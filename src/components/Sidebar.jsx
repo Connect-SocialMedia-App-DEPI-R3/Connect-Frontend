@@ -99,11 +99,6 @@ const Sidebar = () => {
               icon={<IoSettingsOutline />}
               label="Settings"
             />
-            <NavItem
-              to="/add-post"
-              icon={<IoIosAddCircleOutline />}
-              label="Add Post"
-            />
 
             <hr className="my-3 border-gray-300/50" />
 

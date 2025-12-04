@@ -1,9 +1,6 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import { useState, useMemo } from "react";
 import { IoSearch } from "react-icons/io5";
-import { FaHouse } from "react-icons/fa6";
-import { FaRegHeart } from "react-icons/fa";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import Post from "./Post";
 
 const PostsList = ({ posts = [] }) => {
@@ -36,15 +33,6 @@ const PostsList = ({ posts = [] }) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
-        </div>
-
-        {/* Action Buttons */}
-        <div className="flex items-center gap-3 sm:gap-4">
-          <Link to="/add-post">
-            <button className="flex items-center gap-2 bg-gradient-to-r from-pink-400 to-yellow-400 text-white font-medium px-5 py-2 rounded-xl shadow-md transition duration-300 hover:scale-105 hover:shadow-lg text-sm sm:text-base">
-              <IoIosAddCircleOutline className="text-2xl" /> Add Post
-            </button>
-          </Link>
         </div>
       </div>
 

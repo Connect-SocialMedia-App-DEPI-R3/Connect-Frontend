@@ -10,13 +10,8 @@ export const postApi = {
   // Get posts by username
   getPostsByUsername: async (username) => api.get(`/posts/u/${username}`),
 
-  // Create post (with optional image file)
-  createPost: async (postData, file) => {
-    const formData = new FormData();
-    formData.append("content", postData.content);
-    if (file) {
-      formData.append("file", file);
-    }
+  // Create post (accepts FormData directly)
+  createPost: async (formData) => {
     return api.post("/posts", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
