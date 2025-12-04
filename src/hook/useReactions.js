@@ -46,7 +46,7 @@ export const useReactions = (postId) => {
 
   useEffect(() => {
     fetchReactions();
-    checkHasReacted();
+    // checkHasReacted();
   }, [postId]);
 
   return {

@@ -34,7 +34,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
       const formData = new FormData();
       formData.append(
         "title",
-        title.trim() === "" ? "Untitled Post" : title.trim()
+        title.trim()
       );
       formData.append("content", content);
 
@@ -128,7 +128,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            placeholder="Post title (optional)"
+            placeholder="Post title"
             className="border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm bg-white"
           />
 
