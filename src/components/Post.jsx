@@ -1,11 +1,25 @@
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { FiMessageCircle } from "react-icons/fi";
-import { formatDate, getFullAvatarUrl, getFullImageUrl } from "../utils";
-import { useReactionToggle } from "../hook";
+import { HiDotsVertical } from "react-icons/hi";
+import { MdEdit, MdDelete } from "react-icons/md";
+import {
+  formatDate,
+  getFullAvatarUrl,
+  getFullImageUrl,
+  isOwner,
+} from "../utils";
+import { useReactionToggle, usePosts } from "../hook";
+import ConfirmModal from "./ConfirmModal";
+import EditPostModal from "./EditPostModal";
 
 const Post = ({ post, onClick, detailed = false }) => {
   const navigate = useNavigate();
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const { deletePost, updatePost } = usePosts();
 
   // ✅ Use useReactionToggle for both feed and detailed views
   const { hasReacted, toggleReaction } = useReactionToggle(
@@ -13,6 +27,8 @@ const Post = ({ post, onClick, detailed = false }) => {
     post.hasReacted,
     post.reactionsCount || 0
   );
+
+  const isPostOwner = isOwner(post.author.id);
 
   const goToProfile = (e) => {
     e.stopPropagation();
@@ -22,6 +38,52 @@ const Post = ({ post, onClick, detailed = false }) => {
   const handleLikeClick = (e) => {
     e.stopPropagation();
     toggleReaction();
+  };
+
+  const handleEdit = (e) => {
+    e.stopPropagation();
+    setShowDropdown(false);
+    setShowEditModal(true);
+  };
+
+  const handleEditSubmit = async ({
+    title,
+    content,
+    imageFile,
+    removeImage,
+  }) => {
+    const formData = new FormData();
+    formData.append("title", title);
+    formData.append("content", content);
+
+    if (imageFile) {
+      formData.append("file", imageFile);
+    } else if (removeImage) {
+      formData.append("removeImage", "true");
+    }
+
+    await updatePost(post.id, formData);
+    navigate(0); // Refresh to show updated post
+  };
+
+  const onCloseEditModal = () => {
+    setShowEditModal(false);
+  };
+
+  const handleDelete = async (e) => {
+    e.stopPropagation();
+    setShowDropdown(false);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deletePost(post.id);
+      // navigate(0); // Refresh the page or update the state accordingly
+      navigate(detailed ? -1 : 0); // Go back to the previous page if in detailed view
+    } catch (error) {
+      console.error("Failed to delete post:", error);
+    }
   };
 
   return (
@@ -76,13 +138,14 @@ const Post = ({ post, onClick, detailed = false }) => {
       {/* Content Section */}
       <div className="p-4 flex flex-col flex-1">
         {/* Author Info */}
-        <div className="flex items-center gap-3 mb-3" onClick={goToProfile}>
+        <div className="flex items-center gap-3 mb-3">
           <img
             src={getFullAvatarUrl(post.author.avatarUrl)}
             alt={post.author.username}
-            className="rounded-full w-10 h-10 object-cover border-2 border-pink-200 hover:border-pink-400 transition"
+            className="rounded-full w-10 h-10 object-cover border-2 border-pink-200 hover:border-pink-400 transition cursor-pointer"
+            onClick={goToProfile}
           />
-          <div className="flex-1 min-w-0">
+          <div className="flex-1 min-w-0 cursor-pointer" onClick={goToProfile}>
             <h4 className="font-semibold text-gray-900 truncate hover:text-pink-500 transition">
               {post.author.fullName || post.author.username}
             </h4>
@@ -90,6 +153,41 @@ const Post = ({ post, onClick, detailed = false }) => {
               {formatDate(post.createdAt)}
             </p>
           </div>
+
+          {/* Three Dots Menu (Only for owner) */}
+          {isPostOwner && (
+            <div className="relative">
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setShowDropdown(!showDropdown);
+                }}
+                className="p-2 hover:bg-gray-100 rounded-full transition"
+              >
+                <HiDotsVertical className="text-gray-600" />
+              </button>
+
+              {/* Dropdown Menu */}
+              {showDropdown && (
+                <div className="absolute right-0 w-44 bg-white rounded-xl shadow-lg border border-gray-200 z-10 ">
+                  <button
+                    onClick={handleEdit}
+                    className="w-full flex items-center gap-3 px-5 py-3 hover:bg-pink-50 text-gray-800 font-medium rounded-t-xl transition"
+                  >
+                    <MdEdit className="text-lg" />
+                    <span>Edit</span>
+                  </button>
+                  <button
+                    onClick={handleDelete}
+                    className="w-full flex items-center gap-3 px-5 py-3 hover:bg-red-50 text-red-600 font-medium rounded-b-xl transition"
+                  >
+                    <MdDelete className="text-red-500 text-lg" />
+                    <span>Delete</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
         </div>
 
         {/* Post Title & Content */}
@@ -121,7 +219,7 @@ const Post = ({ post, onClick, detailed = false }) => {
             ) : (
               <FaRegHeart className="text-lg group-hover/like:scale-110 transition-transform" />
             )}
-            <span className="text-sm font-medium">{post.likeCount }</span>
+            <span className="text-sm font-medium">{post.likeCount}</span>
           </button>
 
           <button
@@ -138,6 +236,25 @@ const Post = ({ post, onClick, detailed = false }) => {
           </button>
         </div>
       </div>
+
+      {/* Modals */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={() => setShowDeleteModal(false)}
+        onConfirm={confirmDelete}
+        title="Delete Post"
+        message="Are you sure you want to delete this post? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        isDestructive={true}
+      />
+
+      <EditPostModal
+        isOpen={showEditModal}
+        onClose={onCloseEditModal}
+        post={post}
+        onSubmit={handleEditSubmit}
+      />
     </article>
   );
 };

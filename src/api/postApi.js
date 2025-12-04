@@ -19,13 +19,8 @@ export const postApi = {
     });
   },
 
-  // Update post (with optional image file)
-  updatePost: async (id, postData, file) => {
-    const formData = new FormData();
-    formData.append("content", postData.content);
-    if (file) {
-      formData.append("file", file);
-    }
+  // Update post (accepts FormData directly)
+  updatePost: async (id, formData) => {
     return api.put(`/posts/${id}`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",

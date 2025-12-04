@@ -1,39 +1,41 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MdClose } from "react-icons/md";
-import { usePosts } from "../hook";
+import { getFullImageUrl } from "../utils";
 
-const AddPostModal = ({ isOpen, onClose }) => {
+const EditPostModal = ({ isOpen, onClose, post, onSubmit }) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [imagePreview, setImagePreview] = useState(null);
+  const [removeImage, setRemoveImage] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const { createPost } = usePosts();
+  // Load post data when modal opens
+  useEffect(() => {
+    if (post) {
+      setTitle(post.title || "");
+      setContent(post.content || "");
+      setRemoveImage(false);
+    }
+  }, [post]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       setImageFile(file);
-      // Create preview URL
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setRemoveImage(false); // If uploading new image, don't remove
     }
   };
 
   const handleRemoveImage = () => {
+    setRemoveImage(true);
     setImageFile(null);
-    setImagePreview(null);
   };
 
   const resetForm = () => {
     setTitle("");
     setContent("");
     setImageFile(null);
-    setImagePreview(null);
+    setRemoveImage(false);
   };
 
   const handleSubmit = async (e) => {
@@ -41,21 +43,13 @@ const AddPostModal = ({ isOpen, onClose }) => {
     setIsSubmitting(true);
 
     try {
-      const formData = new FormData();
-      formData.append("title", title.trim());
-      formData.append("content", content);
-
-      if (imageFile) {
-        formData.append("file", imageFile);
-      }
-
-      await createPost(formData);
+      await onSubmit({ title, content, imageFile, removeImage });
 
       // Success - close modal and reset
       resetForm();
       onClose();
     } catch (err) {
-      console.error("Failed to create post:", err);
+      console.error("Failed to submit:", err);
     } finally {
       setIsSubmitting(false);
     }
@@ -63,8 +57,16 @@ const AddPostModal = ({ isOpen, onClose }) => {
 
   const handleClose = () => {
     if (!isSubmitting) {
-      resetForm();
+      if (!post) resetForm();
       onClose();
+    }
+  };
+
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      e.preventDefault();
+      e.stopPropagation();
+      handleClose();
     }
   };
 
@@ -72,8 +74,10 @@ const AddPostModal = ({ isOpen, onClose }) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm"
-      onClick={handleClose}
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm overflow-y-auto"
+      onClick={handleBackdropClick}
+      onMouseDown={(e) => e.stopPropagation()}
+      style={{ pointerEvents: "auto" }}
     >
       {/* Modal Content */}
       <div
@@ -90,7 +94,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
         </button>
 
         <h2 className="text-xl sm:text-2xl font-bold text-gray-800 mb-6 text-center pr-8">
-          Create New Post
+          {post ? "Edit Post" : "Create New Post"}
         </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -126,15 +130,15 @@ const AddPostModal = ({ isOpen, onClose }) => {
           {/* Image */}
           <div>
             <label className="block mb-2 font-medium text-gray-700 text-sm">
-              Image (optional)
+              Image
             </label>
 
-            {/* Image Preview */}
-            {imagePreview && (
+            {/* Current Image Preview */}
+            {post?.imageUrl && !removeImage && !imageFile && (
               <div className="mb-3 relative">
                 <img
-                  src={imagePreview}
-                  alt="Preview"
+                  src={getFullImageUrl(post.imageUrl)}
+                  alt="Current post"
                   className="w-full h-48 object-cover rounded-xl border border-gray-300"
                 />
                 <button
@@ -147,14 +151,35 @@ const AddPostModal = ({ isOpen, onClose }) => {
               </div>
             )}
 
-            {/* Upload Image */}
-            {!imagePreview && (
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="block w-full text-gray-700 border border-gray-300 rounded-xl p-2 text-sm bg-white"
-              />
+            {/* Upload New Image */}
+            {!removeImage && (
+              <>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="block w-full text-gray-700 border border-gray-300 rounded-xl p-2 text-sm bg-white"
+                />
+                {post?.imageUrl && !imageFile && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Upload a new image to replace the current one
+                  </p>
+                )}
+              </>
+            )}
+
+            {/* Removed Image Message */}
+            {removeImage && (
+              <div className="bg-red-50 border border-red-200 rounded-xl p-3 text-sm text-red-700">
+                Image will be removed when you save changes.
+                <button
+                  type="button"
+                  onClick={() => setRemoveImage(false)}
+                  className="ml-2 underline hover:no-underline"
+                >
+                  Undo
+                </button>
+              </div>
             )}
           </div>
 
@@ -173,7 +198,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
               disabled={isSubmitting}
               className="flex-1 bg-gradient-to-r from-pink-400 to-yellow-400 text-white font-semibold py-2 rounded-xl shadow-md transition duration-300 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
             >
-              {isSubmitting ? "Posting..." : "Post"}
+              {isSubmitting ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
@@ -182,4 +207,4 @@ const AddPostModal = ({ isOpen, onClose }) => {
   );
 };
 
-export default AddPostModal;
+export default EditPostModal;

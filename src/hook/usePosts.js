@@ -30,9 +30,9 @@ export const usePosts = () => {
     }
   };
 
-  const updatePost = async (id, content, file) => {
+  const updatePost = async (id, formData) => {
     try {
-      const { data } = await postApi.updatePost(id, { content }, file);
+      const { data } = await postApi.updatePost(id, formData);
       setPosts((prev) => prev.map((p) => (p.id === id ? data : p)));
       toast.success("Post updated successfully");
       return data;

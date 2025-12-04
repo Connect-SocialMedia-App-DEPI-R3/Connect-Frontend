@@ -1,51 +1,70 @@
 import { useState } from "react";
+import { getFullAvatarUrl, isOwner } from "../utils";
+import { useComments } from "../hook";
 
-const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
-
-const CommentsList = ({ comments, onAddComment, onDeleteComment }) => {
+const CommentsList = ({ postId }) => {
+  const { comments, loading, addComment, deleteComment } = useComments(postId);
   const [text, setText] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!text.trim()) return;
-    onAddComment(text);
-    setText("");
+
+    try {
+      await addComment(text);
+      setText("");
+    } catch (err) {
+      console.error("Failed to add comment:", err);
+    }
   };
 
-  const getAvatarUrl = (author) => {
-    if (!author) return "/default-avatar.png";
-    if (!author.avatarUrl) return "/default-avatar.png";
-    // لو المسار نسبي
-    return author.avatarUrl.startsWith("/uploads")
-      ? `${API_BASE_URL}${author.avatarUrl}`
-      : author.avatarUrl;
+  const handleDelete = async (commentId) => {
+    try {
+      await deleteComment(commentId);
+    } catch (err) {
+      console.error("Failed to delete comment:", err);
+    }
   };
+
+  if (loading) {
+    return (
+      <div className="bg-white mt-5 p-4 rounded-2xl shadow">
+        <h3 className="font-semibold text-lg mb-3">Comments</h3>
+        <p className="text-gray-500 text-sm">Loading comments...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="bg-white mt-5 p-4 rounded-2xl shadow">
       <h3 className="font-semibold text-lg mb-3">Comments</h3>
 
       <div className="flex flex-col gap-3 mb-4">
-        {(!comments || comments.length === 0) ? (
+        {comments.length === 0 ? (
           <p className="text-gray-500 text-sm">No comments yet.</p>
         ) : (
           comments.map((c) => (
-            <div key={c.id} className="bg-gray-100 p-2 rounded-xl flex justify-between items-start">
+            <div
+              key={c.id}
+              className="bg-gray-100 p-2 rounded-xl flex justify-between items-start"
+            >
               <div className="flex items-start gap-3">
                 <img
-                  src={getAvatarUrl(c.author)}
+                  src={getFullAvatarUrl(c.author?.avatarUrl)}
                   alt="avatar"
-                  className="w-8 h-8 rounded-full mt-1"
+                  className="w-8 h-8 rounded-full mt-1 object-cover"
                 />
                 <div>
-                  <p className="font-semibold text-sm">{c.author?.username || "Unknown"}</p>
+                  <p className="font-semibold text-sm">
+                    {c.author?.username || "Unknown"}
+                  </p>
                   <p className="text-gray-700">{c.content}</p>
                 </div>
               </div>
 
-              {onDeleteComment && (
+              {isOwner(c.author?.id) && (
                 <button
-                  onClick={() => onDeleteComment(c.id)}
+                  onClick={() => handleDelete(c.id)}
                   className="text-red-500 hover:text-red-700 text-sm"
                 >
                   Delete

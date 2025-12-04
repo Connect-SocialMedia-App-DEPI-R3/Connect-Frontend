@@ -1,16 +1,28 @@
 import { useState } from "react";
 import PostsList from "../components/PostsList.jsx";
-import AddPostModal from "../components/AddPostModal.jsx";
+import EditPostModal from "../components/EditPostModal.jsx";
 import { usePosts } from "../hook/usePosts";
 import { FaPlus } from "react-icons/fa6";
 
 const HomePage = () => {
-  const { posts, loading, refetch } = usePosts();
+  const { posts, loading, refetch, createPost } = usePosts();
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleCreatePost = async ({ title, content, imageFile }) => {
+    const formData = new FormData();
+    formData.append("title", title.trim());
+    formData.append("content", content);
+
+    if (imageFile) {
+      formData.append("file", imageFile);
+    }
+
+    await createPost(formData);
+    Navigate(0);
+  };
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    refetch(); // Refresh posts after modal closes
   };
 
   return (
@@ -34,7 +46,12 @@ const HomePage = () => {
       </button>
 
       {/* Add Post Modal */}
-      <AddPostModal isOpen={isModalOpen} onClose={handleCloseModal} />
+      <EditPostModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        post={null}
+        onSubmit={handleCreatePost}
+      />
     </div>
   );
 };
