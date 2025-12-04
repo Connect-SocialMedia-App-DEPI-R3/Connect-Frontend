@@ -34,7 +34,7 @@ const AddPostModal = ({ isOpen, onClose }) => {
       const formData = new FormData();
       formData.append(
         "title",
-        title || (postType === "sale" ? "Sale Post" : "My Post")
+        title.trim() === "" ? "Untitled Post" : title.trim()
       );
       formData.append("content", content);
 
