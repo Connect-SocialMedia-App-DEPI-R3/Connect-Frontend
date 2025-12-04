@@ -10,7 +10,7 @@ const Post = ({ post, onClick }) => {
 
   const goToProfile = (e) => {
     e.stopPropagation();
-    navigate(`/profile/${post.authorUsername}`);
+    navigate(`/profile/${post.author.username}`);
   };
 
   return (
