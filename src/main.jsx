@@ -23,6 +23,7 @@ import AdminSellersPage from "./pages/AdminSellersPage";
 import { Toaster } from "react-hot-toast";
 
 import { UserProvider } from "./context/UserContext";
+import { ProtectedRoute, GuestRoute } from "./components/RouteGuards";
 
 import Layout from "./layouts/Layout";
 
@@ -32,22 +33,25 @@ createRoot(document.getElementById('root')).render(
     <UserProvider>
     <BrowserRouter>
       <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/register" element={<RegisterPage />} />
+        {/* Guest Routes - redirect to home if logged in */}
+        <Route path="/login" element={<GuestRoute><LoginPage /></GuestRoute>} />
+        <Route path="/register" element={<GuestRoute><RegisterPage /></GuestRoute>} />
+        
+        {/* Protected Routes - require authentication */}
       <Route element={<Layout />}>
         <Route path="/" element={<HomePage />} />
-        <Route path="/add-post" element={<AddPostPage />} />
+        <Route path="/add-post" element={<ProtectedRoute><AddPostPage /></ProtectedRoute>} />
         <Route path="/profile/:userId?" element={<ProfilePage />} />
         <Route path="/marketplace" element={<MarketplacePage />} />
         <Route path="/posts/:id" element={<PostDetailsPage />} />
-        <Route path="/edit-profile" element={<EditProfilePage />} />
-        <Route path="/settings" element={<SettingsPage />} /> 
-        <Route path="/chat" element={<ChatPage />} />  
-        <Route path="/admin" element={<AdminDashboard />} /> 
-        <Route path="/all-reports" element={<AllReportsPage />} /> 
-        <Route path="/manage_categories" element={<ManageCategoriesPage />} /> 
-        <Route path="/Unverified_users" element={<UnverifiedUsersPage />} /> 
-        <Route path="/admin_sellers" element={<AdminSellersPage />} /> 
+        <Route path="/edit-profile" element={<ProtectedRoute><EditProfilePage /></ProtectedRoute>} />
+        <Route path="/settings" element={<ProtectedRoute><SettingsPage /></ProtectedRoute>} /> 
+        <Route path="/chat" element={<ProtectedRoute><ChatPage /></ProtectedRoute>} />  
+        <Route path="/admin" element={<ProtectedRoute><AdminDashboard /></ProtectedRoute>} /> 
+        <Route path="/all-reports" element={<ProtectedRoute><AllReportsPage /></ProtectedRoute>} /> 
+        <Route path="/manage_categories" element={<ProtectedRoute><ManageCategoriesPage /></ProtectedRoute>} /> 
+        <Route path="/Unverified_users" element={<ProtectedRoute><UnverifiedUsersPage /></ProtectedRoute>} /> 
+        <Route path="/admin_sellers" element={<ProtectedRoute><AdminSellersPage /></ProtectedRoute>} /> 
        </Route>
       </Routes>
     </BrowserRouter>

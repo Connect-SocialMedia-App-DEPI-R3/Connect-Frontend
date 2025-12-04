@@ -1,0 +1,43 @@
+import api from "./axios";
+
+export const postApi = {
+  // Get all posts
+  getAllPosts: async () => api.get("/posts"),
+
+  // Get post by ID
+  getPostById: async (id) => api.get(`/posts/${id}`),
+
+  // Get posts by username
+  getPostsByUsername: async (username) => api.get(`/posts/u/${username}`),
+
+  // Create post (with optional image file)
+  createPost: async (postData, file) => {
+    const formData = new FormData();
+    formData.append("content", postData.content);
+    if (file) {
+      formData.append("file", file);
+    }
+    return api.post("/posts", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+
+  // Update post (with optional image file)
+  updatePost: async (id, postData, file) => {
+    const formData = new FormData();
+    formData.append("content", postData.content);
+    if (file) {
+      formData.append("file", file);
+    }
+    return api.put(`/posts/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  },
+
+  // Delete post
+  deletePost: async (id) => api.delete(`/posts/${id}`),
+};

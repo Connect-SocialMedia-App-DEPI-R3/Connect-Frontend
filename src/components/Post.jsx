@@ -1,58 +1,94 @@
 import { useNavigate } from "react-router";
-import { FaRegHeart } from "react-icons/fa6";
+import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { FiMessageCircle } from "react-icons/fi";
+import { formatDate, getFullAvatarUrl, getFullImageUrl } from "../utils";
+import { useReactions } from "../hook";
 
 const Post = ({ post, onClick }) => {
+  // const { toggleReaction, hasReacted } = useReactions(post.id);
   const navigate = useNavigate();
 
   const goToProfile = (e) => {
-    e.stopPropagation();     // عشان click على البروفايل ما يعملش click على البوست كله
-    navigate(`/profile/${post.author?.username}`);
+    e.stopPropagation();
+    navigate(`/profile/${post.authorUsername}`);
   };
 
   return (
-    <div
+    <article
       onClick={onClick}
-      className="rounded-2xl bg-white shadow p-4 hover:shadow-lg transition cursor-pointer"
+      className="group rounded-2xl bg-white shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer border border-gray-100 flex flex-col h-full"
     >
-      <div className="flex items-center gap-3 mb-3">
-        
-        <img
-          src={post.author?.avatarUrl || "/default-avatar.png"}
-          alt="User"
-          className="rounded-full w-12 h-12 cursor-pointer"
-          onClick={goToProfile}
-        />
-
-        <div onClick={goToProfile} className="cursor-pointer">
-          <h4 className="font-semibold">{post.author?.username || "Unknown"}</h4>
-          <p className="text-sm text-gray-500">{new Date(post.createdAt).toLocaleString()}</p>
-        </div>
-
-      </div>
-
+      {/* Post Image */}
       {post.imageUrl && (
-        <img
-          src={post.imageUrl}
-          alt="Post"
-          className="rounded-xl w-full mb-3 object-cover aspect-4/3 object-center"
-        />
+        <div className="relative overflow-hidden aspect-square">
+          <img
+            src={getFullImageUrl(post.imageUrl)}
+            alt={post.title || "Post image"}
+            className="w-full h-full object-cover"
+          />
+        </div>
       )}
 
-      <p className="text-gray-800 pb-3">{post.content}</p>
+      {/* Content Section */}
+      <div className="p-4 flex flex-col flex-1">
+        {/* Author Info */}
+        <div className="flex items-center gap-3 mb-3" onClick={goToProfile}>
+          <img
+            src={getFullAvatarUrl(post.author.avatarUrl)}
+            alt={post.author.username}
+            className="rounded-full w-10 h-10 object-cover border-2 border-pink-200 hover:border-pink-400 transition"
+          />
+          <div className="flex-1 min-w-0">
+            <h4 className="font-semibold text-gray-900 truncate hover:text-pink-500 transition">
+              {post.author.fullName || post.author.username}
+            </h4>
+            <p className="text-xs text-gray-500">
+              {formatDate(post.createdAt)}
+            </p>
+          </div>
+        </div>
 
-      <div className="flex justify-around border-t pt-3 text-gray-500">
-        <button className="flex items-center gap-2 hover:text-pink-500 transition">
-          <FaRegHeart className="text-xl" />
-          <span>Like</span>
-        </button>
+        {/* Post Title & Content */}
+        <div className="mb-3 flex-1">
+          {post.title && (
+            <h3 className="font-bold text-gray-900 mb-1 line-clamp-2">
+              {post.title}
+            </h3>
+          )}
+          {post.content && (
+            <p className="text-gray-600 text-sm line-clamp-3">{post.content}</p>
+          )}
+        </div>
 
-        <button className="flex items-center gap-2 hover:text-pink-500 transition">
-          <FiMessageCircle className="text-xl" />
-          <span>Comment</span>
-        </button>
+        {/* Stats & Actions - Pushed to bottom */}
+        <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
+          <button
+            className="flex items-center gap-1.5 text-gray-500 hover:text-pink-500 transition group/like"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Handle like action
+              // toggleReaction();
+            }}
+          >
+            <FaRegHeart className="text-lg group-hover/like:scale-110 transition-transform" />
+            <span className="text-sm font-medium">{post.likeCount || 0}</span>
+          </button>
+
+          <button
+            className="flex items-center gap-1.5 text-gray-500 hover:text-pink-500 transition group/comment"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Handle comment action
+            }}
+          >
+            <FiMessageCircle className="text-lg group-hover/comment:scale-110 transition-transform" />
+            <span className="text-sm font-medium">
+              {post.commentCount || 0}
+            </span>
+          </button>
+        </div>
       </div>
-    </div>
+    </article>
   );
 };
 
