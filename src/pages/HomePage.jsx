@@ -7,7 +7,7 @@ const HomePage = () => {
 
   return (
     <div className="p-6">
-      <h1 className="font-bold text-xl sm:text-2xl">Feed</h1>
+      <h1 className="font-bold text-xl pl-10 sm:text-2xl">Feed</h1>
       {loading
         ? <div className="flex justify-center items-center h-screen">Loading posts...</div>
         : <PostsList posts={posts} />}
