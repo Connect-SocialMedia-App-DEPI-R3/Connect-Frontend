@@ -4,7 +4,7 @@ import { FiMessageCircle } from "react-icons/fi";
 import { formatDate, getFullAvatarUrl, getFullImageUrl } from "../utils";
 import { useReactions } from "../hook";
 
-const Post = ({ post, onClick }) => {
+const Post = ({ post, onClick, detailed = false }) => {
   // const { toggleReaction, hasReacted } = useReactions(post.id);
   const navigate = useNavigate();
 
@@ -20,11 +20,11 @@ const Post = ({ post, onClick }) => {
     >
       {/* Post Image */}
       {post.imageUrl && (
-        <div className="relative overflow-hidden aspect-square">
+        <div className={`relative overflow-hidden ${detailed ? 'max-h-[500px]' : 'aspect-square'}`}>
           <img
             src={getFullImageUrl(post.imageUrl)}
             alt={post.title || "Post image"}
-            className="w-full h-full object-cover"
+            className={`w-full ${detailed ? 'h-auto max-h-[500px]' : 'h-full'} object-cover`}
           />
         </div>
       )}
@@ -56,7 +56,7 @@ const Post = ({ post, onClick }) => {
             </h3>
           )}
           {post.content && (
-            <p className="text-gray-600 text-sm line-clamp-3">{post.content}</p>
+            <p className={`text-gray-600 text-sm ${detailed ? '' : 'line-clamp-3'}`}>{post.content}</p>
           )}
         </div>
 
@@ -83,7 +83,7 @@ const Post = ({ post, onClick }) => {
           >
             <FiMessageCircle className="text-lg group-hover/comment:scale-110 transition-transform" />
             <span className="text-sm font-medium">
-              {post.commentCount || 0}
+              {detailed ? post.comments.length : post.commentCount || 0}
             </span>
           </button>
         </div>
