@@ -2,17 +2,26 @@ import { useNavigate } from "react-router";
 import { FaRegHeart, FaHeart } from "react-icons/fa6";
 import { FiMessageCircle } from "react-icons/fi";
 import { formatDate, getFullAvatarUrl, getFullImageUrl } from "../utils";
-import { useReactions } from "../hook";
+import { useReactionToggle } from "../hook";
 
 const Post = ({ post, onClick, detailed = false }) => {
-  if (detailed) {
-    const { toggleReaction } = useReactions(post.id);
-  }  
   const navigate = useNavigate();
+
+  // ✅ Use useReactionToggle for both feed and detailed views
+  const { hasReacted, toggleReaction } = useReactionToggle(
+    post.id,
+    post.hasReacted,
+    post.reactionsCount || 0
+  );
 
   const goToProfile = (e) => {
     e.stopPropagation();
     navigate(`/profile/${post.author.username}`);
+  };
+
+  const handleLikeClick = (e) => {
+    e.stopPropagation();
+    toggleReaction();
   };
 
   return (
@@ -39,7 +48,9 @@ const Post = ({ post, onClick, detailed = false }) => {
         <div
           className={`relative overflow-hidden ${
             detailed ? "h-48" : "aspect-square"
-          } bg-gradient-to-r from-pink-400 to-yellow-400 ${detailed ? "via-purple-400 to-indigo-500" : ""} flex items-center justify-center`}
+          } bg-gradient-to-r from-pink-400 to-yellow-400 ${
+            detailed ? "via-purple-400 to-indigo-500" : ""
+          } flex items-center justify-center`}
         >
           <div className="text-center p-6">
             {post.title ? (
@@ -47,7 +58,11 @@ const Post = ({ post, onClick, detailed = false }) => {
                 {post.title}
               </h2>
             ) : (
-              <p className={`text-white font-semibold text-lg md:text-xl drop-shadow-lg ${detailed ? "" : "line-clamp-4 px-4"}`}>
+              <p
+                className={`text-white font-semibold text-lg md:text-xl drop-shadow-lg ${
+                  detailed ? "" : "line-clamp-4 px-4"
+                }`}
+              >
                 {post.content}
               </p>
             )}
@@ -99,14 +114,14 @@ const Post = ({ post, onClick, detailed = false }) => {
         <div className="flex items-center justify-between pt-3 border-t border-gray-100 mt-auto">
           <button
             className="flex items-center gap-1.5 text-gray-500 hover:text-pink-500 transition group/like"
-            onClick={(e) => {
-              e.stopPropagation();
-              // Handle like action
-              // toggleReaction();
-            }}
+            onClick={handleLikeClick}
           >
-            <FaRegHeart className="text-lg group-hover/like:scale-110 transition-transform" />
-            <span className="text-sm font-medium">{post.likeCount || 0}</span>
+            {hasReacted ? (
+              <FaHeart className="text-lg text-pink-500 group-hover/like:scale-110 transition-transform" />
+            ) : (
+              <FaRegHeart className="text-lg group-hover/like:scale-110 transition-transform" />
+            )}
+            <span className="text-sm font-medium">{post.likeCount }</span>
           </button>
 
           <button

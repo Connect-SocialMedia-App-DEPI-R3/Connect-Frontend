@@ -5,7 +5,7 @@ export { useFollowing } from "./useFollowing";
 export { usePost } from "./usePost";
 export { usePosts } from "./usePosts";
 export { useProfile } from "./useProfile";
-export { useReactions } from "./useReactions";
+export { useReactions, useReactionToggle } from "./useReactions";
 export { useUser } from "./useUser";
 export { useUsers } from "./useUsers";
 export { useUserPosts } from "./useUserPosts";
