@@ -28,7 +28,7 @@ const EditProfilePage = () => {
   useEffect(() => {
     const fetchProfile = async () => {
       try {
-        const res = await api.get("/api/profile", {
+        const res = await api.get("/profile", {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
         });
 
@@ -61,7 +61,7 @@ const EditProfilePage = () => {
     try {
       const updateDto = { ...user, [field]: tempValue };
 
-      const res = await api.put("/api/profile", updateDto, {
+      const res = await api.put("/profile", updateDto, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
       });
 
@@ -86,7 +86,7 @@ const EditProfilePage = () => {
       const formData = new FormData();
       formData.append("file", selectedAvatarFile);
 
-      const res = await api.put("/api/profile/avatar", formData, {
+      const res = await api.put("/profile/avatar", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -109,7 +109,7 @@ const EditProfilePage = () => {
       const defaultFile = await fetch(defaultAvatar).then(res => res.blob());
       formData.append("file", defaultFile, "default_avatar.jpeg");
 
-      const res = await api.put("/api/profile/avatar", formData, {
+      const res = await api.put("/profile/avatar", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${localStorage.getItem("token")}`
@@ -269,7 +269,7 @@ const EditProfilePage = () => {
                             try {
                               const updateDto = { ...user, [field]: "" };
 
-                              const res = await api.put("/api/profile", updateDto, {
+                              const res = await api.put("/profile", updateDto, {
                                 headers: { Authorization: `Bearer ${localStorage.getItem("token")}` }
                               });
 

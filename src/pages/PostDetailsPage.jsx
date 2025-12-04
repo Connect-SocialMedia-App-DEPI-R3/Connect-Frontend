@@ -26,7 +26,7 @@ const PostDetailsPage = () => {
         let authorData = post.author;
         if (!authorData) {
           try {
-            const res = await api.get(`/api/profile/${post.authorId}`);
+            const res = await api.get(`/profile/${post.authorId}`);
             authorData = {
               ...res.data,
               avatarUrl: res.data.avatarUrl

@@ -39,7 +39,7 @@ const AddPostPage = () => {
       }
 
       // POST request
-      const res = await api.post("/api/posts", formData, {
+      const res = await api.post("/posts", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
