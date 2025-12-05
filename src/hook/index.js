@@ -1,3 +1,4 @@
+export { useAuth } from "./useAuth";
 export { useComments } from "./useComments";
 export { useFollow } from "./useFollow";
 export { useFollowers } from "./useFollowers";
