@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import Sidebar from "../components/Sidebar.jsx";
 import { api } from "../api/axios";
 
 const defaultAvatar = "/src/assets/placeholder_avatar.jpeg";

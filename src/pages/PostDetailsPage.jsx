@@ -1,5 +1,4 @@
 import { useParams } from "react-router";
-import Sidebar from "../components/Sidebar.jsx";
 import Post from "../components/Post.jsx";
 import CommentsList from "../components/CommentsList.jsx";
 import { usePosts } from "../hook/usePosts";

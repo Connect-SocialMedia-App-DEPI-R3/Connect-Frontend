@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect } from "react";
-import Sidebar from "../components/Sidebar.jsx";
 
 // Dummy data
 const allUsers = [

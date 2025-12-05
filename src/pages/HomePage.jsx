@@ -1,4 +1,3 @@
-import Sidebar from "../components/Sidebar.jsx";
 import PostsList from "../components/PostsList.jsx";
 import { usePosts } from "../hook/usePosts";
 

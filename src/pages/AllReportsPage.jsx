@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Sidebar from "../components/Sidebar.jsx";
 import cute1 from "../assets/cute1.png";
 
 const mockReports = [
