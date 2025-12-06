@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net/api";
-const API_BASE_URL = "http://localhost:5034/api";
+const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net/api";
+// const API_BASE_URL = "http://localhost:5034/api";
 
 export const api = axios.create({
   baseURL: API_BASE_URL,

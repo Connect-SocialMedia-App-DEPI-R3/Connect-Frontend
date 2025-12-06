@@ -1,7 +1,7 @@
 import * as signalR from "@microsoft/signalr";
 
-// const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
-const API_BASE_URL = "http://localhost:5034";
+const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
+// const API_BASE_URL = "http://localhost:5034";
 
 class ChatService {
   constructor() {
