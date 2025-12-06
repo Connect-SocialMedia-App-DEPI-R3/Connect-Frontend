@@ -18,14 +18,53 @@ export const useAuth = () => {
       navigate(0);
     } catch (error) {
       console.log(error);
+      const errorResponse = { fieldErrors: {}, message: "" };
+
       if (error.response?.data?.errors) {
-        for (const errorKey in error.response?.data?.errors) {
-          toast.error(error.response?.data?.errors[errorKey]);
+        // Map API field errors to form field names
+        const apiErrors = error.response.data.errors;
+
+        // Handle different possible error formats from API
+        Object.keys(apiErrors).forEach((key) => {
+          const lowerKey = key.toLowerCase();
+          const errorMessage = Array.isArray(apiErrors[key])
+            ? apiErrors[key][0]
+            : apiErrors[key];
+
+          if (lowerKey.includes("fullname") || lowerKey === "fullname") {
+            errorResponse.fieldErrors.fullName = errorMessage;
+          } else if (lowerKey.includes("username")) {
+            errorResponse.fieldErrors.username = errorMessage;
+          } else if (lowerKey.includes("email")) {
+            errorResponse.fieldErrors.email = errorMessage;
+          } else if (lowerKey.includes("password")) {
+            errorResponse.fieldErrors.password = errorMessage;
+          } else {
+            errorResponse.message = errorMessage;
+          }
+        });
+      } else if (error.response?.data?.message) {
+        // If there's a general message, try to map it to a field
+        const message = error.response.data.message;
+        const lowerMessage = message.toLowerCase();
+
+        // Try to detect which field the error is about
+        if (lowerMessage.includes("password")) {
+          errorResponse.fieldErrors.password = message;
+        } else if (lowerMessage.includes("email")) {
+          errorResponse.fieldErrors.email = message;
+        } else if (lowerMessage.includes("username")) {
+          errorResponse.fieldErrors.username = message;
+        } else if (lowerMessage.includes("name")) {
+          errorResponse.fieldErrors.fullName = message;
+        } else {
+          errorResponse.message = message;
         }
       } else {
-        toast.error(error.response?.data?.message || "Registration failed");
+        errorResponse.message = "Registration failed";
       }
-      throw error;
+
+      throw errorResponse;
     } finally {
       setLoading(false);
     }
