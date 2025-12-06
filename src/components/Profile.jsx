@@ -137,22 +137,6 @@ const Profile = ({ userData, posts, isOwner, currentUser }) => {
         </div>
       </div>
 
-      {/* ===== POSTS TOGGLE ===== */}
-      <div className="flex justify-center gap-2 sm:gap-4 mb-6">
-        <button
-          onClick={() => setActiveTab("social")}
-          className={`px-6 py-2 rounded-xl font-semibold ${activeTab === "social" ? "bg-pink-500 text-white" : "bg-gray-200"}`}
-        >
-          Social Posts
-        </button>
-        <button
-          onClick={() => setActiveTab("market")}
-          className={`px-6 py-2 rounded-xl font-semibold ${activeTab === "market" ? "bg-yellow-400 text-white" : "bg-gray-200"}`}
-        >
-          Market Posts
-        </button>
-      </div>
-
       {/* ===== POSTS LIST ===== */}
       <PostsList posts={postsToShow} />
 

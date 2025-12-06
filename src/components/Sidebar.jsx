@@ -90,7 +90,7 @@ const Sidebar = () => {
         {/* View Profile */}
         {isLoggedIn && (
           <Link to="/profile" className="w-full mb-6 flex-shrink-0">
-            <button className="w-full bg-gradient-to-r from-pink-400 to-yellow-400 text-white font-medium px-5 py-2.5 rounded-xl transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+            <button className="w-full bg-gradient-to-r cursor-pointer from-pink-400 to-yellow-400 text-white font-medium px-5 py-2.5 rounded-xl transition duration-300 hover:-translate-y-1 hover:shadow-lg">
               View Profile
             </button>
           </Link>
@@ -100,7 +100,7 @@ const Sidebar = () => {
         <nav className="w-full flex-1">
           <ul className="space-y-2 text-gray-700">
             <NavItem to="/" icon={<HiOutlineSquares2X2 />} label="Feed" />
-            <NavItem to="/market" icon={<SiCoinmarketcap />} label="Market" />
+            {/* <NavItem to="/market" icon={<SiCoinmarketcap />} label="Market" /> */}
             <NavItem to="/chats" icon={<FiMessageSquare />} label="Messages" />
             <NavItem
               to="/settings"

@@ -124,7 +124,7 @@ const MobileNav = () => {
                 label="Feed"
                 onClick={closeMenu}
               />
-              <MobileNavItem to="/market" icon={<SiCoinmarketcap />} label="Market" />
+              {/* <MobileNavItem to="/market" icon={<SiCoinmarketcap />} label="Market" /> */}
               <MobileNavItem
                 to="/chats"
                 icon={<FiMessageSquare />}
