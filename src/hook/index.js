@@ -1,8 +1,11 @@
 export { useAuth } from "./useAuth";
+export { useChats } from "./useChats";
+export { useChatDetails } from "./useChatDetails";
 export { useComments } from "./useComments";
 export { useFollow } from "./useFollow";
 export { useFollowers } from "./useFollowers";
 export { useFollowing } from "./useFollowing";
+export { useMessages } from "./useMessages";
 export { usePost } from "./usePost";
 export { usePosts } from "./usePosts";
 export { useProfile } from "./useProfile";

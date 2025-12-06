@@ -21,11 +21,13 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const { register, loading } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setErrors({}); // Clear previous errors
 
     try {
       await register({ fullName, username, email, password });
@@ -34,8 +36,14 @@ const RegisterPage = () => {
       setUsername("");
       setEmail("");
       setPassword("");
+      setErrors({});
     } catch (err) {
-      // Error handled by hook
+      // Error handled by hook and returned
+      if (err.fieldErrors) {
+        setErrors(err.fieldErrors);
+      } else if (err.message) {
+        setErrors({ general: err.message });
+      }
     }
   };
 
@@ -87,66 +95,135 @@ const RegisterPage = () => {
         </h2>
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+          {/* General Error */}
+          {errors.general && (
+            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl text-sm">
+              {errors.general}
+            </div>
+          )}
+
           {/* Full Name */}
-          <div className="relative">
-            <FaIdBadge className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
-            <input
-              type="text"
-              placeholder="Full Name"
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
-              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
-              required
-            />
+          <div>
+            <div className="relative">
+              <FaIdBadge className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+              <input
+                type="text"
+                placeholder="Full Name"
+                value={fullName}
+                onChange={(e) => {
+                  setFullName(e.target.value);
+                  if (errors.fullName) {
+                    setErrors({ ...errors, fullName: null });
+                  }
+                }}
+                className={`border rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 text-sm sm:text-base ${
+                  errors.fullName
+                    ? "border-red-300 focus:ring-red-300 bg-red-50"
+                    : "border-gray-300 focus:ring-pink-300"
+                }`}
+                required
+              />
+            </div>
+            {errors.fullName && (
+              <p className="text-red-500 text-xs mt-1 ml-1">
+                {errors.fullName}
+              </p>
+            )}
           </div>
 
           {/* Username */}
-          <div className="relative">
-            <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
-            <input
-              type="text"
-              placeholder="Username"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
-              required
-            />
+          <div>
+            <div className="relative">
+              <FaUser className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+              <input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                  if (errors.username) {
+                    setErrors({ ...errors, username: null });
+                  }
+                }}
+                className={`border rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 text-sm sm:text-base ${
+                  errors.username
+                    ? "border-red-300 focus:ring-red-300 bg-red-50"
+                    : "border-gray-300 focus:ring-pink-300"
+                }`}
+                required
+              />
+            </div>
+            {errors.username && (
+              <p className="text-red-500 text-xs mt-1 ml-1">
+                {errors.username}
+              </p>
+            )}
           </div>
 
           {/* Email */}
-          <div className="relative">
-            <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
-            <input
-              type="email"
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
-              required
-            />
+          <div>
+            <div className="relative">
+              <FaEnvelope className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+              <input
+                type="email"
+                placeholder="Email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  if (errors.email) {
+                    setErrors({ ...errors, email: null });
+                  }
+                }}
+                className={`border rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 text-sm sm:text-base ${
+                  errors.email
+                    ? "border-red-300 focus:ring-red-300 bg-red-50"
+                    : "border-gray-300 focus:ring-pink-300"
+                }`}
+                required
+              />
+            </div>
+            {errors.email && (
+              <p className="text-red-500 text-xs mt-1 ml-1">{errors.email}</p>
+            )}
           </div>
 
           {/* Password */}
-          <div className="relative">
-            <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="border border-gray-300 rounded-xl p-3 pl-10 w-full focus:outline-none focus:ring-2 focus:ring-pink-300 text-sm sm:text-base"
-              required
-            />
-            <div
-              className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? (
-                <FaEyeSlash className="text-lg" />
-              ) : (
-                <FaEye className="text-lg" />
-              )}
+          <div>
+            <div className="relative">
+              <FaLock className="absolute left-3 top-1/2 -translate-y-1/2 text-pink-500 text-lg" />
+              <input
+                type={showPassword ? "text" : "password"}
+                placeholder="Password"
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  if (errors.password) {
+                    setErrors({ ...errors, password: null });
+                  }
+                }}
+                className={`border rounded-xl p-3 pl-10 pr-10 w-full focus:outline-none focus:ring-2 text-sm sm:text-base ${
+                  errors.password
+                    ? "border-red-300 focus:ring-red-300 bg-red-50"
+                    : "border-gray-300 focus:ring-pink-300"
+                }`}
+                required
+              />
+              <div
+                className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer text-gray-500"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                {showPassword ? (
+                  <FaEyeSlash className="text-lg" />
+                ) : (
+                  <FaEye className="text-lg" />
+                )}
+              </div>
             </div>
+            {errors.password && (
+              <p className="text-red-500 text-xs mt-1 ml-1">
+                {errors.password}
+              </p>
+            )}
           </div>
 
           <button

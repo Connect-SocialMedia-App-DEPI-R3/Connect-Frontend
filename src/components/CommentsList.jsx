@@ -154,17 +154,17 @@ const CommentsList = ({ postId }) => {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="flex gap-2">
+      <form onSubmit={handleSubmit} className="flex flex-col sm:flex-row gap-2">
         <input
           type="text"
           placeholder="Write a comment..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="flex-1 border rounded-xl p-2 focus:outline-pink-400"
+          className="flex-1 border rounded-xl p-2 focus:outline-pink-400 text-sm sm:text-base"
         />
         <button
           type="submit"
-          className="bg-pink-500 text-white px-4 rounded-xl hover:bg-pink-600 transition"
+          className="bg-pink-500 text-white px-4 py-2 rounded-xl hover:bg-pink-600 transition text-sm sm:text-base"
         >
           Send
         </button>

@@ -14,6 +14,9 @@ import PostDetailsPage from "./pages/PostDetailsPage";
 import EditProfilePage from "./pages/EditProfilePage";
 import SettingsPage from "./pages/SettingsPage";
 import ChatPage from "./pages/ChatPage";
+import ChatsPage from "./pages/ChatsPage";
+import ChatDetailsPage from "./pages/ChatDetailsPage";
+import UsersPage from "./pages/UsersPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import AllReportsPage from "./pages/AllReportsPage";
 import ManageCategoriesPage from "./pages/ManageCategoriesPage";
@@ -78,6 +81,30 @@ createRoot(document.getElementById("root")).render(
               element={
                 <ProtectedRoute>
                   <ChatPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chats"
+              element={
+                <ProtectedRoute>
+                  <ChatsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/chats/:chatId"
+              element={
+                <ProtectedRoute>
+                  <ChatDetailsPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/users"
+              element={
+                <ProtectedRoute>
+                  <UsersPage />
                 </ProtectedRoute>
               }
             />

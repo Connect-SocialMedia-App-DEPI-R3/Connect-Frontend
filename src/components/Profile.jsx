@@ -1,12 +1,30 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { FiMessageSquare } from "react-icons/fi";
 import PostsList from "../components/PostsList.jsx";
-
-const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
-const defaultAvatar = "src/assets/placeholder_avatar.jpeg";
+import { useChats } from "../hook";
+import toast from "react-hot-toast";
+import { getFullAvatarUrl } from "../utils";
 
 const Profile = ({ userData, posts, isOwner }) => {
   const [activeTab, setActiveTab] = useState("social");
+  const navigate = useNavigate();
+  const { createPrivateChat } = useChats();
+  const [startingChat, setStartingChat] = useState(false);
+
+  const handleStartChat = async () => {
+    if (!userData?.id) return;
+
+    setStartingChat(true);
+    try {
+      const chat = await createPrivateChat(userData.id);
+      navigate(`/chats/${chat.id}`);
+    } catch (err) {
+      console.error("Failed to start chat:", err);
+    } finally {
+      setStartingChat(false);
+    }
+  };
 
   if (!userData) {
     return (
@@ -17,9 +35,7 @@ const Profile = ({ userData, posts, isOwner }) => {
   }
 
   const user = {
-    avatar: userData.avatarUrl
-      ? `${API_BASE_URL}${userData.avatarUrl}`
-      : defaultAvatar,
+    avatar: getFullAvatarUrl(userData.avatarUrl),
     name: userData.fullName,
     username: userData.username,
     followersCount: userData.followerCount,
@@ -28,13 +44,12 @@ const Profile = ({ userData, posts, isOwner }) => {
   };
 
   // فلترة البوستات حسب التاب
-  const socialPosts = posts.filter(p => !p.price);
-  const marketPosts = posts.filter(p => p.price);
+  const socialPosts = posts.filter((p) => !p.price);
+  const marketPosts = posts.filter((p) => p.price);
   const postsToShow = activeTab === "social" ? socialPosts : marketPosts;
 
   return (
     <div className="flex-1 flex flex-col gap-8 p-5 overflow-y-auto">
-
       {/* ===== HEADER ===== */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-gray-300 pb-6 mb-6">
         <img
@@ -47,10 +62,10 @@ const Profile = ({ userData, posts, isOwner }) => {
         />
 
         <div className="flex-1 flex flex-col text-center sm:text-left">
-          <h1 className="text-3xl font-bold">{user.name}</h1>
-          <p className="text-gray-500">@{user.username}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">{user.name}</h1>
+          <p className="text-gray-500 text-sm sm:text-base">@{user.username}</p>
 
-          <div className="flex items-center gap-8 mt-3 text-gray-700 text-lg">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-8 mt-3 text-gray-700 text-sm sm:text-base md:text-lg">
             <span>{user.followersCount} Followers</span>
             <span>{user.followingCount} Following</span>
             <span>{posts.length} Posts</span>
@@ -59,16 +74,30 @@ const Profile = ({ userData, posts, isOwner }) => {
           {isOwner ? (
             <Link
               to="/edit-profile"
-              className="mt-4 px-5 py-3 rounded-full border border-pink-500 
-                       text-pink-500 hover:bg-pink-50 font-semibold"
+              className="mt-4 px-4 sm:px-5 py-2 sm:py-3 rounded-full border border-pink-500 
+                       text-pink-500 hover:bg-pink-50 font-semibold text-sm sm:text-base text-center"
             >
               Edit Profile
             </Link>
           ) : (
-            <button className="mt-4 px-5 py-3 rounded-full bg-pink-500 
-                               text-white font-semibold hover:bg-pink-600">
-              Follow
-            </button>
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
+              <button
+                className="flex-1 px-4 sm:px-5 py-2 sm:py-3 rounded-full bg-pink-500 
+                               text-white font-semibold hover:bg-pink-600 text-sm sm:text-base"
+              >
+                Follow
+              </button>
+              <button
+                onClick={handleStartChat}
+                disabled={startingChat}
+                className="flex-1 sm:flex-initial px-4 sm:px-5 py-2 sm:py-3 rounded-full border border-gray-300 
+                         text-gray-700 hover:bg-gray-50 font-semibold flex items-center justify-center gap-2
+                         disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
+              >
+                <FiMessageSquare size={18} />
+                {startingChat ? "..." : "Message"}
+              </button>
+            </div>
           )}
 
           {user.bio && <p className="text-gray-700 mt-3">{user.bio}</p>}
@@ -76,19 +105,25 @@ const Profile = ({ userData, posts, isOwner }) => {
       </div>
 
       {/* ===== POSTS TOGGLE ===== */}
-      <div className="flex justify-center gap-4 mb-6">
+      <div className="flex justify-center gap-2 sm:gap-4 mb-6">
         <button
           onClick={() => setActiveTab("social")}
-          className={`px-6 py-2 rounded-xl font-semibold 
-            ${activeTab === "social" ? "bg-pink-500 text-white" : "bg-gray-200"}`}
+          className={`px-4 sm:px-6 py-2 rounded-xl font-semibold text-sm sm:text-base
+            ${
+              activeTab === "social" ? "bg-pink-500 text-white" : "bg-gray-200"
+            }`}
         >
           Social Posts
         </button>
 
         <button
           onClick={() => setActiveTab("market")}
-          className={`px-6 py-2 rounded-xl font-semibold 
-            ${activeTab === "market" ? "bg-yellow-400 text-white" : "bg-gray-200"}`}
+          className={`px-4 sm:px-6 py-2 rounded-xl font-semibold text-sm sm:text-base
+            ${
+              activeTab === "market"
+                ? "bg-yellow-400 text-white"
+                : "bg-gray-200"
+            }`}
         >
           Market Posts
         </button>
@@ -96,7 +131,6 @@ const Profile = ({ userData, posts, isOwner }) => {
 
       {/* ===== POSTS LIST COMPONENT ===== */}
       <PostsList posts={postsToShow} />
-
     </div>
   );
 };
