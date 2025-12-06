@@ -1,70 +1,98 @@
 import { useState, useEffect } from "react";
-import { api } from "../api/axios";
+import toast from "react-hot-toast";
+import { commentApi, profileApi } from "../api";
 
 export const useComments = (postId) => {
-    const [comments, setComments] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+  const [comments, setComments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
-    // ÌáÈ ßá ÇáßæãäÊÇÊ
-    const fetchComments = async () => {
-        setLoading(true);
-        try {
-            const res = await api.get(`/api/posts/${postId}/comments`);
-            setComments(res.data);
-        } catch (err) {
-            console.error("Failed to fetch comments:", err);
-            setError(err);
-        } finally {
-            setLoading(false);
-        }
+  // Fetch current user profile on mount
+  useEffect(() => {
+    const fetchCurrentUser = async () => {
+      try {
+        const { data } = await profileApi.getMyProfile();
+        setCurrentUser(data);
+      } catch (error) {
+        console.error("Failed to fetch current user:", error);
+      }
     };
+    fetchCurrentUser();
+  }, []);
 
-    // ÅÖÇÝÉ ßæãäÊ ÌÏíÏ
-    const addComment = async (text) => {
-        try {
-            const res = await api.post(`/api/posts/${postId}/comments`, { content: text });
-            setComments((prev) => [...prev, res.data]);
-        } catch (err) {
-            console.error("Failed to add comment:", err);
-            setError(err);
-        }
-    };
+  const fetchComments = async () => {
+    if (!postId) return;
+    setLoading(true);
+    try {
+      const { data } = await commentApi.getCommentsByPostId(postId);
+      setComments(data);
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to fetch comments");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    // ÊÚÏíá ßæãäÊ
-    const updateComment = async (commentId, text) => {
-        try {
-            const res = await api.put(`/api/posts/${postId}/comments/${commentId}`, { content: text });
-            setComments((prev) => prev.map(c => c.id === commentId ? res.data : c));
-        } catch (err) {
-            console.error("Failed to update comment:", err);
-            setError(err);
-        }
-    };
+  const addComment = async (content) => {
+    try {
+      const { data } = await commentApi.createComment(postId, content);
+      
+      // Enrich comment with current user data if author is missing
+      const enrichedComment = {
+        ...data,
+        author: data.author || {
+          id: currentUser?.id,
+          username: currentUser?.username,
+          avatarUrl: currentUser?.avatarUrl,
+        },
+      };
+      
+      setComments((prev) => [...prev, enrichedComment]);
+      toast.success("Comment added successfully");
+      return enrichedComment;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to add comment");
+      throw error;
+    }
+  };
 
-    // ÍÐÝ ßæãäÊ
-    const deleteComment = async (commentId) => {
-        try {
-            await api.delete(`/api/posts/${postId}/comments/${commentId}`);
-            setComments((prev) => prev.filter(c => c.id !== commentId));
-        } catch (err) {
-            console.error("Failed to delete comment:", err);
-            setError(err);
-        }
-    };
+  const updateComment = async (commentId, content) => {
+    try {
+      const { data } = await commentApi.updateComment(
+        postId,
+        commentId,
+        content
+      );
+      setComments((prev) => prev.map((c) => (c.id === commentId ? data : c)));
+      toast.success("Comment updated successfully");
+      return data;
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to update comment");
+      throw error;
+    }
+  };
 
-    // ÌáÈ ÇáßæãäÊÇÊ Ãæá ãÑÉ
-    useEffect(() => {
-        if (postId) fetchComments();
-    }, [postId]);
+  const deleteComment = async (commentId) => {
+    try {
+      await commentApi.deleteComment(postId, commentId);
+      setComments((prev) => prev.filter((c) => c.id !== commentId));
+      toast.success("Comment deleted successfully");
+    } catch (error) {
+      toast.error(error.response?.data?.message || "Failed to delete comment");
+      throw error;
+    }
+  };
 
-    return {
-        comments,
-        loading,
-        error,
-        fetchComments,
-        addComment,
-        updateComment,
-        deleteComment,
-    };
+  useEffect(() => {
+    fetchComments();
+  }, [postId]);
+
+  return {
+    comments,
+    loading,
+    addComment,
+    updateComment,
+    deleteComment,
+    refetch: fetchComments,
+  };
 };

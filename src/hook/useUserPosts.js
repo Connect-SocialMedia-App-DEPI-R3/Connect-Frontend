@@ -1,29 +1,29 @@
-import { useEffect, useState } from "react";
-import { api } from "../api/axios";
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
+import { postApi } from "../api";
 
 export const useUserPosts = (username) => {
-  const [userPosts, setUserPosts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchUserPosts = async () => {
+    if (!username) return;
+    setLoading(true);
+    try {
+      const { data } = await postApi.getPostsByUsername(username);
+      setPosts(data);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to fetch user posts"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    if (!username) return;
-
-    const fetchUserPosts = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await api.get(`/api/posts/u/${username}`);
-        setUserPosts(res.data);
-      } catch (err) {
-        setError(err.message || "Failed to fetch user posts");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchUserPosts();
   }, [username]);
 
-  return { userPosts, loading, error };
+  return { posts, loading, refetch: fetchUserPosts };
 };

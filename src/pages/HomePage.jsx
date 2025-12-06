@@ -1,15 +1,57 @@
+import { useState } from "react";
 import PostsList from "../components/PostsList.jsx";
+import EditPostModal from "../components/EditPostModal.jsx";
 import { usePosts } from "../hook/usePosts";
+import { FaPlus } from "react-icons/fa6";
 
 const HomePage = () => {
-  const { posts, loading } = usePosts();
+  const { posts, loading, refetch, createPost } = usePosts();
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-  if (loading) return <div className="flex justify-center items-center h-screen">Loading posts...</div>;
+  const handleCreatePost = async ({ title, content, imageFile }) => {
+    const formData = new FormData();
+    formData.append("title", title.trim());
+    formData.append("content", content);
+
+    if (imageFile) {
+      formData.append("file", imageFile);
+    }
+
+    await createPost(formData);
+    Navigate(0);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
   return (
-    <div className="p-6">
-      <h1 className="font-bold text-xl sm:text-2xl">Feed</h1>
-      <PostsList posts={posts} />
+    <div className="p-6 relative">
+      <h1 className="font-bold text-xl pl-10 sm:text-2xl">Feed</h1>
+      {loading ? (
+        <div className="flex justify-center items-center h-screen">
+          Loading posts...
+        </div>
+      ) : (
+        <PostsList posts={posts} />
+      )}
+
+      {/* Floating Add Post Button */}
+      <button
+        onClick={() => setIsModalOpen(true)}
+        className="fixed bottom-8 right-8 bg-gradient-to-r from-pink-400 to-yellow-400 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 hover:shadow-2xl z-40"
+        aria-label="Create new post"
+      >
+        <FaPlus size={24} />
+      </button>
+
+      {/* Add Post Modal */}
+      <EditPostModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        post={null}
+        onSubmit={handleCreatePost}
+      />
     </div>
   );
 };

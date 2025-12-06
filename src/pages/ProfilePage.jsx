@@ -20,8 +20,8 @@ const ProfilePage = () => {
         // لو في userId → جيبي بروفايل حد تاني
         // لو مفيش → جيبي بروفايل اليوزر الحالي
         const endpoint = userId
-          ? `/api/profile/${userId}`
-          : `/api/profile`;
+          ? `/profile/${userId}`
+          : `/profile`;
 
         const res = await api.get(endpoint);
         setUser(res.data);
@@ -46,7 +46,7 @@ const ProfilePage = () => {
       setPostsLoading(true);
       try {
         const username = user.username;
-        const res = await api.get(`/api/posts/u/${username}`);
+        const res = await api.get(`/posts/u/${username}`);
         setUserPosts(res.data);
       } catch (err) {
         console.error("Failed to fetch user posts:", err);

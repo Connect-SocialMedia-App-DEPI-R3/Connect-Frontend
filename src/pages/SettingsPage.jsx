@@ -22,7 +22,7 @@ const SettingsPage = () => {
 
     try {
       // نرسل DELETE request للـ API
-      await api.delete("/api/profile", {
+      await api.delete("/profile", {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`
         }
