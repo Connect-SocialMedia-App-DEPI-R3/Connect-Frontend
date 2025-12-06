@@ -1,5 +1,6 @@
 import { Navigate } from "react-router";
 import { useUser } from "../context/UserContext";
+import { isAuthenticated } from "../utils";
 
 // ✅ Protect routes that require authentication
 export const ProtectedRoute = ({ children }) => {
@@ -13,7 +14,7 @@ export const ProtectedRoute = ({ children }) => {
     );
   }
 
-  if (!isLoggedIn) {
+  if (!isAuthenticated()) {
     return <Navigate to="/login" replace />;
   }
 
@@ -32,7 +33,7 @@ export const GuestRoute = ({ children }) => {
     );
   }
 
-  if (isLoggedIn) {
+  if (isAuthenticated()) {
     return <Navigate to="/" replace />;
   }
 
