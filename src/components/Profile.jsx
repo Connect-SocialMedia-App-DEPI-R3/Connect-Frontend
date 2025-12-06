@@ -87,8 +87,8 @@ const Profile = ({ userData, posts, isOwner, currentUser }) => {
         />
 
         <div className="flex-1 flex flex-col text-center sm:text-left">
-          <h1 className="text-3xl font-bold">{user.name}</h1>
-          <p className="text-gray-500">@{user.username}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">{user.name}</h1>
+          <p className="text-gray-500 text-sm sm:text-base">@{user.username}</p>
 
           <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-8 mt-3 text-gray-700 text-sm sm:text-base md:text-lg">
             <span className="cursor-pointer" onClick={() => setShowFollowersModal(true)}>
@@ -138,7 +138,7 @@ const Profile = ({ userData, posts, isOwner, currentUser }) => {
       </div>
 
       {/* ===== POSTS TOGGLE ===== */}
-      <div className="flex justify-center gap-4 mb-6">
+      <div className="flex justify-center gap-2 sm:gap-4 mb-6">
         <button
           onClick={() => setActiveTab("social")}
           className={`px-6 py-2 rounded-xl font-semibold ${activeTab === "social" ? "bg-pink-500 text-white" : "bg-gray-200"}`}

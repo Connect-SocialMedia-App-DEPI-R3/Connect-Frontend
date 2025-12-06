@@ -114,15 +114,15 @@ const Post = ({ post, onClick, detailed = false }) => {
             detailed ? "via-purple-400 to-indigo-500" : ""
           } flex items-center justify-center`}
         >
-          <div className="text-center p-6">
+          <div className="text-center p-4 sm:p-6">
             {post.title ? (
-              <h2 className="text-white font-bold text-2xl md:text-3xl drop-shadow-lg line-clamp-3">
+              <h2 className="text-white font-bold text-xl sm:text-2xl md:text-3xl drop-shadow-lg line-clamp-3">
                 {post.title}
               </h2>
             ) : (
               <p
-                className={`text-white font-semibold text-lg md:text-xl drop-shadow-lg ${
-                  detailed ? "" : "line-clamp-4 px-4"
+                className={`text-white font-semibold text-base sm:text-lg md:text-xl drop-shadow-lg ${
+                  detailed ? "" : "line-clamp-4 px-2 sm:px-4"
                 }`}
               >
                 {post.content}
@@ -136,17 +136,17 @@ const Post = ({ post, onClick, detailed = false }) => {
       )}
 
       {/* Content Section */}
-      <div className="p-4 flex flex-col flex-1">
+      <div className="p-3 sm:p-4 flex flex-col flex-1">
         {/* Author Info */}
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center gap-2 sm:gap-3 mb-3">
           <img
             src={getFullAvatarUrl(post.author.avatarUrl)}
             alt={post.author.username}
-            className="rounded-full w-10 h-10 object-cover border-2 border-pink-200 hover:border-pink-400 transition cursor-pointer"
+            className="rounded-full w-8 h-8 sm:w-10 sm:h-10 object-cover border-2 border-pink-200 hover:border-pink-400 transition cursor-pointer flex-shrink-0"
             onClick={goToProfile}
           />
           <div className="flex-1 min-w-0 cursor-pointer" onClick={goToProfile}>
-            <h4 className="font-semibold text-gray-900 truncate hover:text-pink-500 transition">
+            <h4 className="font-semibold text-sm sm:text-base text-gray-900 truncate hover:text-pink-500 transition">
               {post.author.fullName || post.author.username}
             </h4>
             <p className="text-xs text-gray-500">

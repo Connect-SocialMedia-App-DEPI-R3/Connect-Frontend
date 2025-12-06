@@ -57,8 +57,8 @@ const ChatDetailsPage = () => {
   return (
     <div className="flex flex-col h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-white border-b border-gray-200 p-4 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+      <div className="bg-white border-b border-gray-200 p-3 sm:p-4 flex items-center justify-between">
+        <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
           <button
             onClick={() => navigate("/chats")}
             className="text-gray-600 hover:text-gray-800"
@@ -67,24 +67,26 @@ const ChatDetailsPage = () => {
           </button>
 
           <div
-            className="flex items-center gap-3 cursor-pointer"
+            className="flex items-center gap-2 sm:gap-3 cursor-pointer flex-1 min-w-0"
             onClick={handleGoToProfile}
           >
             {chat?.isGroup ? (
-              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-pink-400 to-yellow-400 flex items-center justify-center text-white font-semibold">
+              <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-gradient-to-br from-pink-400 to-yellow-400 flex items-center justify-center text-white font-semibold text-sm sm:text-base flex-shrink-0">
                 {displayName?.charAt(0).toUpperCase()}
               </div>
             ) : (
               <img
                 src={displayAvatar}
                 alt={displayName}
-                className="w-10 h-10 rounded-full object-cover"
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover flex-shrink-0"
               />
             )}
-            <div>
-              <h2 className="font-semibold text-gray-800">{displayName}</h2>
+            <div className="flex-1 min-w-0">
+              <h2 className="font-semibold text-sm sm:text-base text-gray-800 truncate">
+                {displayName}
+              </h2>
               {chat?.isGroup && (
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-gray-500 truncate">
                   {chat.members?.length} members
                 </p>
               )}
