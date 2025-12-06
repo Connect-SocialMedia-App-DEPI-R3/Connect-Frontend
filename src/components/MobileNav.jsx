@@ -8,6 +8,7 @@ import { HiMenuAlt3 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router";
 import { useUser } from "../context/UserContext";
 import { getFullAvatarUrl, removeAuthToken } from "../utils";
+import { SiCoinmarketcap } from "react-icons/si";
 
 const MobileNav = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -123,16 +124,11 @@ const MobileNav = () => {
                 label="Feed"
                 onClick={closeMenu}
               />
+              <MobileNavItem to="/market" icon={<SiCoinmarketcap />} label="Market" />
               <MobileNavItem
                 to="/chats"
                 icon={<FiMessageSquare />}
                 label="Messages"
-                onClick={closeMenu}
-              />
-              <MobileNavItem
-                to="/notifications"
-                icon={<FaRegHeart />}
-                label="Notifications"
                 onClick={closeMenu}
               />
               <MobileNavItem

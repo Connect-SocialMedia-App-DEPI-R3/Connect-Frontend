@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PostsList from "../components/PostsList.jsx";
+import MarketPostList from "../components/MarketPostList.jsx";
 import EditMarketPostModal from "../components/EditMarketPostModal.jsx";
 import { usePosts } from "../hook/usePosts";
 import { FaPlus } from "react-icons/fa6";
@@ -27,13 +27,13 @@ const MarketPage = () => {
 
   return (
     <div className="p-6 relative">
-      <h1 className="font-bold text-xl pl-10 sm:text-2xl">Feed</h1>
+      <h1 className="font-bold text-xl pl-10 sm:text-2xl">Market</h1>
       {loading ? (
         <div className="flex justify-center items-center h-screen">
           Loading posts...
         </div>
       ) : (
-        <PostsList posts={posts} refetch={refetch}/>
+        <MarketPostList posts={posts} refetch={refetch}/>
       )}
 
       {/* Floating Add Post Button */}

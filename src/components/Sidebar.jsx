@@ -103,11 +103,6 @@ const Sidebar = () => {
             <NavItem to="/market" icon={<SiCoinmarketcap />} label="Market" />
             <NavItem to="/chats" icon={<FiMessageSquare />} label="Messages" />
             <NavItem
-              to="/notifications"
-              icon={<FaRegHeart />}
-              label="Notifications"
-            />
-            <NavItem
               to="/settings"
               icon={<IoSettingsOutline />}
               label="Settings"
