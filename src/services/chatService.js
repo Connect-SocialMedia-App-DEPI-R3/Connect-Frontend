@@ -1,6 +1,6 @@
 import * as signalR from "@microsoft/signalr";
 
-const API_BASE_URL = import.meta.env.VITE_API_HUB_URL || "https://connect-api-depi-r3-2025.runasp.net";
+const API_BASE_URL = import.meta.env.VITE_API_HUB_URL;
 // const API_BASE_URL = "http://localhost:5034";
 
 class ChatService {

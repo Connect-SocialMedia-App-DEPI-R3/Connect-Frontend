@@ -22,6 +22,7 @@ import AllReportsPage from "./pages/AllReportsPage";
 import ManageCategoriesPage from "./pages/ManageCategoriesPage";
 import UnverifiedUsersPage from "./pages/UnverifiedUsersPage";
 import AdminSellersPage from "./pages/AdminSellersPage";
+import MarketPage from "./pages/MarketPage";
 
 import { Toaster } from "react-hot-toast";
 
@@ -57,6 +58,7 @@ createRoot(document.getElementById("root")).render(
           {/* Protected Routes - require authentication */}
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/market" element={<MarketPage />} />
             <Route path="/profile/:userId?" element={<ProfilePage />} />
             <Route path="/marketplace" element={<MarketplacePage />} />
             <Route path="/posts/:id" element={<PostDetailsPage />} />
