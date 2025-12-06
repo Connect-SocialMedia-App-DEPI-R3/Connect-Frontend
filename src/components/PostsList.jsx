@@ -3,7 +3,7 @@ import { useState, useMemo } from "react";
 import { IoSearch } from "react-icons/io5";
 import Post from "./Post";
 
-const PostsList = ({ posts = [] }) => {
+const PostsList = ({ posts = [] , refetch}) => {
   const [searchTerm, setSearchTerm] = useState("");
   const navigate = useNavigate();
 
@@ -44,6 +44,7 @@ const PostsList = ({ posts = [] }) => {
               key={post.id}
               post={post}
               onClick={() => navigate(`/posts/${post.id}`)}
+              refetch={refetch}
             />
           ))
         ) : (

@@ -14,7 +14,7 @@ import { useReactionToggle, usePosts } from "../hook";
 import ConfirmModal from "./ConfirmModal";
 import EditPostModal from "./EditPostModal";
 
-const Post = ({ post, onClick, detailed = false }) => {
+const Post = ({ post, onClick, detailed = false, refetch }) => {
   const navigate = useNavigate();
   const [showDropdown, setShowDropdown] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -80,10 +80,15 @@ const Post = ({ post, onClick, detailed = false }) => {
     try {
       await deletePost(post.id);
       // navigate(0); // Refresh the page or update the state accordingly
-      navigate(detailed ? -1 : 0); // Go back to the previous page if in detailed view
-    } catch (error) {
-      console.error("Failed to delete post:", error);
+      if (detailed) {
+      navigate(-1); // لو في صفحة تفاصيل ارجع لورا
+    } else {
+      // هنا ممكن تستدعي refetch من usePosts أو تعمل state تحديث في الـ parent
+      refetch(); // لو متوفر كدالة
     }
+  } catch (error) {
+    console.error("Failed to delete post:", error);
+  }
   };
 
   return (

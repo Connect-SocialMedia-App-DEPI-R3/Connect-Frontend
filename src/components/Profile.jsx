@@ -107,7 +107,7 @@ const Profile = ({ userData, posts, isOwner, currentUser }) => {
                 <button
                   onClick={handleToggleFollowButton}
                   disabled={loadingFollow}
-                  className={`flex-1 px-4 sm:px-5 py-2 sm:py-3 rounded-full font-semibold ${isFollowing ? "bg-gray-200 text-gray-700" : "bg-pink-500 text-white"}`}
+                  className={`flex-1 px-4 sm:px-5 py-2 sm:py-3 cursor-pointer rounded-full font-semibold ${isFollowing ? "bg-gray-200 text-gray-700" : "bg-pink-500 text-white"}`}
                 >
                   {isFollowing ? "Unfollow" : "Follow"}
                 </button>

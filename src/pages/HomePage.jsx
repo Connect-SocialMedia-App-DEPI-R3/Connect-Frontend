@@ -18,7 +18,7 @@ const HomePage = () => {
     }
 
     await createPost(formData);
-    Navigate(0);
+    await refetch();
   };
 
   const handleCloseModal = () => {
@@ -33,7 +33,7 @@ const HomePage = () => {
           Loading posts...
         </div>
       ) : (
-        <PostsList posts={posts} />
+        <PostsList posts={posts} refetch={refetch}/>
       )}
 
       {/* Floating Add Post Button */}

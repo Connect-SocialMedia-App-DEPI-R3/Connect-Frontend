@@ -1,12 +1,19 @@
 import { MdClose } from "react-icons/md";
-
-const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
-const DEFAULT_AVATAR = "src/assets/placeholder_avatar.jpeg";
+import { getFullAvatarUrl } from "../utils";
+import { createPortal } from "react-dom";
+import { useNavigate } from "react-router";
 
 const ProfileModal = ({ isOpen, onClose, title, users, loading }) => {
+  const navigate = useNavigate();
+
   if (!isOpen) return null;
 
-  return (
+  const handleUserClick = (username) => {
+    navigate(`/profile/${username}`);
+    onClose();
+  };
+
+  return createPortal(
     <div
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-sm"
       onClick={onClose}
@@ -27,7 +34,10 @@ const ProfileModal = ({ isOpen, onClose, title, users, loading }) => {
         {loading ? (
           <div className="flex flex-col gap-3 max-h-96 overflow-y-auto">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="flex items-center gap-3 p-2 rounded-lg bg-gray-200 animate-pulse">
+              <div
+                key={i}
+                className="flex items-center gap-3 p-2 rounded-lg bg-gray-200 animate-pulse"
+              >
                 <div className="w-10 h-10 rounded-full bg-gray-300" />
                 <div className="flex-1 h-4 bg-gray-300 rounded" />
               </div>
@@ -38,10 +48,11 @@ const ProfileModal = ({ isOpen, onClose, title, users, loading }) => {
             {users.map((user) => (
               <div
                 key={user.username}
-                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 transition"
+                onClick={() => handleUserClick(user.username)}
+                className="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-100 transition cursor-pointer"
               >
                 <img
-                  src={user.avatarUrl ? `${API_BASE_URL}${user.avatarUrl}` : DEFAULT_AVATAR}
+                  src={getFullAvatarUrl(user.avatarUrl)}
                   alt={user.username}
                   className="w-10 h-10 rounded-full object-cover"
                 />
@@ -54,7 +65,8 @@ const ProfileModal = ({ isOpen, onClose, title, users, loading }) => {
           </div>
         )}
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 
