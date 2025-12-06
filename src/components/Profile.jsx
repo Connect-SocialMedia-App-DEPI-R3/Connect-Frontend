@@ -62,10 +62,10 @@ const Profile = ({ userData, posts, isOwner }) => {
         />
 
         <div className="flex-1 flex flex-col text-center sm:text-left">
-          <h1 className="text-3xl font-bold">{user.name}</h1>
-          <p className="text-gray-500">@{user.username}</p>
+          <h1 className="text-2xl sm:text-3xl font-bold">{user.name}</h1>
+          <p className="text-gray-500 text-sm sm:text-base">@{user.username}</p>
 
-          <div className="flex items-center gap-8 mt-3 text-gray-700 text-lg">
+          <div className="flex flex-wrap items-center justify-center sm:justify-start gap-4 sm:gap-8 mt-3 text-gray-700 text-sm sm:text-base md:text-lg">
             <span>{user.followersCount} Followers</span>
             <span>{user.followingCount} Following</span>
             <span>{posts.length} Posts</span>
@@ -74,25 +74,25 @@ const Profile = ({ userData, posts, isOwner }) => {
           {isOwner ? (
             <Link
               to="/edit-profile"
-              className="mt-4 px-5 py-3 rounded-full border border-pink-500 
-                       text-pink-500 hover:bg-pink-50 font-semibold"
+              className="mt-4 px-4 sm:px-5 py-2 sm:py-3 rounded-full border border-pink-500 
+                       text-pink-500 hover:bg-pink-50 font-semibold text-sm sm:text-base text-center"
             >
               Edit Profile
             </Link>
           ) : (
-            <div className="flex gap-3 mt-4">
+            <div className="flex flex-col sm:flex-row gap-3 mt-4">
               <button
-                className="flex-1 px-5 py-3 rounded-full bg-pink-500 
-                               text-white font-semibold hover:bg-pink-600"
+                className="flex-1 px-4 sm:px-5 py-2 sm:py-3 rounded-full bg-pink-500 
+                               text-white font-semibold hover:bg-pink-600 text-sm sm:text-base"
               >
                 Follow
               </button>
               <button
                 onClick={handleStartChat}
                 disabled={startingChat}
-                className="px-5 py-3 rounded-full border border-gray-300 
-                         text-gray-700 hover:bg-gray-50 font-semibold flex items-center gap-2
-                         disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-1 sm:flex-initial px-4 sm:px-5 py-2 sm:py-3 rounded-full border border-gray-300 
+                         text-gray-700 hover:bg-gray-50 font-semibold flex items-center justify-center gap-2
+                         disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
               >
                 <FiMessageSquare size={18} />
                 {startingChat ? "..." : "Message"}
@@ -105,10 +105,10 @@ const Profile = ({ userData, posts, isOwner }) => {
       </div>
 
       {/* ===== POSTS TOGGLE ===== */}
-      <div className="flex justify-center gap-4 mb-6">
+      <div className="flex justify-center gap-2 sm:gap-4 mb-6">
         <button
           onClick={() => setActiveTab("social")}
-          className={`px-6 py-2 rounded-xl font-semibold 
+          className={`px-4 sm:px-6 py-2 rounded-xl font-semibold text-sm sm:text-base
             ${
               activeTab === "social" ? "bg-pink-500 text-white" : "bg-gray-200"
             }`}
@@ -118,7 +118,7 @@ const Profile = ({ userData, posts, isOwner }) => {
 
         <button
           onClick={() => setActiveTab("market")}
-          className={`px-6 py-2 rounded-xl font-semibold 
+          className={`px-4 sm:px-6 py-2 rounded-xl font-semibold text-sm sm:text-base
             ${
               activeTab === "market"
                 ? "bg-yellow-400 text-white"

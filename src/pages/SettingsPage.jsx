@@ -24,8 +24,8 @@ const SettingsPage = () => {
       // نرسل DELETE request للـ API
       await api.delete("/profile", {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
 
       alert("Account deleted successfully!");
@@ -37,9 +37,12 @@ const SettingsPage = () => {
     }
   };
 
-  const optionClass = "px-3 py-2 rounded-xl border border-pink-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400 transition duration-200";
-  const checkboxClass = "w-5 h-5 accent-pink-500 rounded-md shadow-sm transition duration-200";
-  const buttonClass = "px-4 py-2 bg-purple-300 text-purple-800 rounded-xl hover:bg-purple-400 transition shadow-sm";
+  const optionClass =
+    "px-3 py-2 rounded-xl border border-pink-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-pink-400 transition duration-200";
+  const checkboxClass =
+    "w-5 h-5 accent-pink-500 rounded-md shadow-sm transition duration-200";
+  const buttonClass =
+    "px-4 py-2 bg-purple-300 text-purple-800 rounded-xl hover:bg-purple-400 transition shadow-sm";
 
   return (
     <div className=" bg-gradient-to-br from-pink-50 to-purple-50">
@@ -51,16 +54,28 @@ const SettingsPage = () => {
           <h2 className="text-2xl font-bold text-pink-600">Privacy</h2>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Profile Visibility</p>
-            <select value={profilePrivacy} onChange={(e) => setProfilePrivacy(e.target.value)} className={optionClass}>
+            <p className="text-lg font-semibold text-pink-700">
+              Profile Visibility
+            </p>
+            <select
+              value={profilePrivacy}
+              onChange={(e) => setProfilePrivacy(e.target.value)}
+              className={optionClass}
+            >
               <option>Public</option>
               <option>Private</option>
             </select>
           </div>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Who can comment</p>
-            <select value={whoCanComment} onChange={(e) => setWhoCanComment(e.target.value)} className={optionClass}>
+            <p className="text-lg font-semibold text-pink-700">
+              Who can comment
+            </p>
+            <select
+              value={whoCanComment}
+              onChange={(e) => setWhoCanComment(e.target.value)}
+              className={optionClass}
+            >
               <option>Everyone</option>
               <option>Followers</option>
               <option>No one</option>
@@ -68,8 +83,14 @@ const SettingsPage = () => {
           </div>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Who can message</p>
-            <select value={whoCanMessage} onChange={(e) => setWhoCanMessage(e.target.value)} className={optionClass}>
+            <p className="text-lg font-semibold text-pink-700">
+              Who can message
+            </p>
+            <select
+              value={whoCanMessage}
+              onChange={(e) => setWhoCanMessage(e.target.value)}
+              className={optionClass}
+            >
               <option>Everyone</option>
               <option>Followers</option>
               <option>No one</option>
@@ -82,13 +103,27 @@ const SettingsPage = () => {
           <h2 className="text-2xl font-bold text-pink-600">Notifications</h2>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Push Notifications</p>
-            <input type="checkbox" checked={pushNotifications} onChange={() => setPushNotifications(!pushNotifications)} className={checkboxClass} />
+            <p className="text-lg font-semibold text-pink-700">
+              Push Notifications
+            </p>
+            <input
+              type="checkbox"
+              checked={pushNotifications}
+              onChange={() => setPushNotifications(!pushNotifications)}
+              className={checkboxClass}
+            />
           </div>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Email Notifications</p>
-            <input type="checkbox" checked={emailNotifications} onChange={() => setEmailNotifications(!emailNotifications)} className={checkboxClass} />
+            <p className="text-lg font-semibold text-pink-700">
+              Email Notifications
+            </p>
+            <input
+              type="checkbox"
+              checked={emailNotifications}
+              onChange={() => setEmailNotifications(!emailNotifications)}
+              className={checkboxClass}
+            />
           </div>
         </div>
 
@@ -97,13 +132,24 @@ const SettingsPage = () => {
           <h2 className="text-2xl font-bold text-pink-600">Account</h2>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Change Password</p>
-            <button onClick={handleChangePassword} className={buttonClass}>Change</button>
+            <p className="text-lg font-semibold text-pink-700">
+              Change Password
+            </p>
+            <button onClick={handleChangePassword} className={buttonClass}>
+              Change
+            </button>
           </div>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Delete Account</p>
-            <button onClick={handleDeleteAccount} className="px-4 py-2 bg-red-400 text-white rounded-xl hover:bg-red-500 transition shadow-sm">Delete</button>
+            <p className="text-lg font-semibold text-pink-700">
+              Delete Account
+            </p>
+            <button
+              onClick={handleDeleteAccount}
+              className="px-4 py-2 bg-red-400 text-white rounded-xl hover:bg-red-500 transition shadow-sm"
+            >
+              Delete
+            </button>
           </div>
         </div>
 
@@ -113,7 +159,11 @@ const SettingsPage = () => {
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
             <p className="text-lg font-semibold text-pink-700">Theme</p>
-            <select value={theme} onChange={(e) => setTheme(e.target.value)} className={optionClass}>
+            <select
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)}
+              className={optionClass}
+            >
               <option>Light</option>
               <option>Dark</option>
             </select>
@@ -125,14 +175,19 @@ const SettingsPage = () => {
           <h2 className="text-2xl font-bold text-pink-600">Language</h2>
 
           <div className="flex items-center justify-between bg-pink-50 p-4 rounded-xl">
-            <p className="text-lg font-semibold text-pink-700">Interface Language</p>
-            <select value={language} onChange={(e) => setLanguage(e.target.value)} className={optionClass}>
+            <p className="text-lg font-semibold text-pink-700">
+              Interface Language
+            </p>
+            <select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value)}
+              className={optionClass}
+            >
               <option>English</option>
               <option>Arabic</option>
             </select>
           </div>
         </div>
-
       </div>
     </div>
   );

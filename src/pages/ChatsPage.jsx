@@ -66,18 +66,23 @@ const ChatsPage = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="max-w-4xl mx-auto p-4 sm:p-6">
       {/* Header */}
       <div className="bg-white rounded-2xl shadow-sm border border-gray-100 mb-6">
-        <div className="p-6">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="bg-gradient-to-r from-pink-400 to-yellow-400 p-3 rounded-xl">
-                <FiMessageSquare size={24} className="text-white" />
+        <div className="p-4 sm:p-6">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="bg-gradient-to-r from-pink-400 to-yellow-400 p-2 sm:p-3 rounded-xl">
+                <FiMessageSquare
+                  size={20}
+                  className="sm:w-6 sm:h-6 text-white"
+                />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-gray-800">Messages</h1>
-                <p className="text-sm text-gray-500">
+                <h1 className="text-xl sm:text-2xl font-bold text-gray-800">
+                  Messages
+                </h1>
+                <p className="text-xs sm:text-sm text-gray-500">
                   {isConnected ? "Connected" : "Connecting..."}
                 </p>
               </div>
@@ -86,7 +91,7 @@ const ChatsPage = () => {
             {/* TODO: Add button to create new group/chat */}
             <button
               onClick={() => navigate("/users")}
-              className="bg-gradient-to-r from-pink-400 to-yellow-400 text-white px-4 py-2 rounded-xl flex items-center gap-2 hover:scale-105 transition"
+              className="bg-gradient-to-r from-pink-400 to-yellow-400 text-white px-4 py-2 rounded-xl flex items-center gap-2 hover:scale-105 transition text-sm sm:text-base w-full sm:w-auto justify-center"
             >
               <FiUsers size={18} />
               New Chat

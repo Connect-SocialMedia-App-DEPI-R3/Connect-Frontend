@@ -31,7 +31,7 @@ const PostDetailsPage = () => {
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-4 sm:p-6 max-w-4xl mx-auto">
       <Post post={post} detailed={true} />
       <CommentsList postId={id} />
     </div>

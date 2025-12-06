@@ -26,8 +26,10 @@ const HomePage = () => {
   };
 
   return (
-    <div className="p-6 relative">
-      <h1 className="font-bold text-xl pl-10 sm:text-2xl">Feed</h1>
+    <div className="p-4 sm:p-6 relative">
+      <h1 className="font-bold text-xl md:pl-10 sm:text-2xl md:text-3xl mb-4">
+        Feed
+      </h1>
       {loading ? (
         <div className="flex justify-center items-center h-screen">
           Loading posts...
@@ -39,10 +41,10 @@ const HomePage = () => {
       {/* Floating Add Post Button */}
       <button
         onClick={() => setIsModalOpen(true)}
-        className="fixed bottom-8 right-8 bg-gradient-to-r from-pink-400 to-yellow-400 text-white p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 hover:shadow-2xl z-40"
+        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 bg-gradient-to-r from-pink-400 to-yellow-400 text-white p-3 sm:p-4 rounded-full shadow-lg hover:scale-110 transition-transform duration-300 hover:shadow-2xl z-40"
         aria-label="Create new post"
       >
-        <FaPlus size={24} />
+        <FaPlus size={20} className="sm:w-6 sm:h-6" />
       </button>
 
       {/* Add Post Modal */}
