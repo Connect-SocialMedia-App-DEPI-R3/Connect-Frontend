@@ -7,3 +7,4 @@ export { reactionApi } from "./reactionApi";
 export { followApi } from "./followApi";
 export { profileApi } from "./profileApi";
 export { imageApi } from "./imageApi";
+export { chatApi } from "./chatApi";

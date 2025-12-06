@@ -1,6 +1,7 @@
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
 import { LuMessageCircleMore } from "react-icons/lu";
 import { FaRegHeart } from "react-icons/fa6";
+import { FiMessageSquare } from "react-icons/fi";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineLogout } from "react-icons/md";
 import { IoIosAddCircleOutline } from "react-icons/io";
@@ -88,7 +89,8 @@ const Sidebar = () => {
         <nav className="w-full flex-1">
           <ul className="space-y-2 text-gray-700">
             <NavItem to="/" icon={<HiOutlineSquares2X2 />} label="Feed" />
-            <NavItem to="/chat" icon={<LuMessageCircleMore />} label="Direct" />
+            <NavItem to="/chats" icon={<FiMessageSquare />} label="Messages" />
+            {/* <NavItem to="/chat" icon={<LuMessageCircleMore />} label="Direct" /> */}
             <NavItem
               to="/notifications"
               icon={<FaRegHeart />}

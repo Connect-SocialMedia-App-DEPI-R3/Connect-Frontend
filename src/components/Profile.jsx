@@ -1,12 +1,30 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { FiMessageSquare } from "react-icons/fi";
 import PostsList from "../components/PostsList.jsx";
-
-const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
-const defaultAvatar = "src/assets/placeholder_avatar.jpeg";
+import { useChats } from "../hook";
+import toast from "react-hot-toast";
+import { getFullAvatarUrl } from "../utils";
 
 const Profile = ({ userData, posts, isOwner }) => {
   const [activeTab, setActiveTab] = useState("social");
+  const navigate = useNavigate();
+  const { createPrivateChat } = useChats();
+  const [startingChat, setStartingChat] = useState(false);
+
+  const handleStartChat = async () => {
+    if (!userData?.id) return;
+
+    setStartingChat(true);
+    try {
+      const chat = await createPrivateChat(userData.id);
+      navigate(`/chats/${chat.id}`);
+    } catch (err) {
+      console.error("Failed to start chat:", err);
+    } finally {
+      setStartingChat(false);
+    }
+  };
 
   if (!userData) {
     return (
@@ -17,9 +35,7 @@ const Profile = ({ userData, posts, isOwner }) => {
   }
 
   const user = {
-    avatar: userData.avatarUrl
-      ? `${API_BASE_URL}${userData.avatarUrl}`
-      : defaultAvatar,
+    avatar: getFullAvatarUrl(userData.avatarUrl),
     name: userData.fullName,
     username: userData.username,
     followersCount: userData.followerCount,
@@ -28,13 +44,12 @@ const Profile = ({ userData, posts, isOwner }) => {
   };
 
   // فلترة البوستات حسب التاب
-  const socialPosts = posts.filter(p => !p.price);
-  const marketPosts = posts.filter(p => p.price);
+  const socialPosts = posts.filter((p) => !p.price);
+  const marketPosts = posts.filter((p) => p.price);
   const postsToShow = activeTab === "social" ? socialPosts : marketPosts;
 
   return (
     <div className="flex-1 flex flex-col gap-8 p-5 overflow-y-auto">
-
       {/* ===== HEADER ===== */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-6 border-b border-gray-300 pb-6 mb-6">
         <img
@@ -65,10 +80,24 @@ const Profile = ({ userData, posts, isOwner }) => {
               Edit Profile
             </Link>
           ) : (
-            <button className="mt-4 px-5 py-3 rounded-full bg-pink-500 
-                               text-white font-semibold hover:bg-pink-600">
-              Follow
-            </button>
+            <div className="flex gap-3 mt-4">
+              <button
+                className="flex-1 px-5 py-3 rounded-full bg-pink-500 
+                               text-white font-semibold hover:bg-pink-600"
+              >
+                Follow
+              </button>
+              <button
+                onClick={handleStartChat}
+                disabled={startingChat}
+                className="px-5 py-3 rounded-full border border-gray-300 
+                         text-gray-700 hover:bg-gray-50 font-semibold flex items-center gap-2
+                         disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                <FiMessageSquare size={18} />
+                {startingChat ? "..." : "Message"}
+              </button>
+            </div>
           )}
 
           {user.bio && <p className="text-gray-700 mt-3">{user.bio}</p>}
@@ -80,7 +109,9 @@ const Profile = ({ userData, posts, isOwner }) => {
         <button
           onClick={() => setActiveTab("social")}
           className={`px-6 py-2 rounded-xl font-semibold 
-            ${activeTab === "social" ? "bg-pink-500 text-white" : "bg-gray-200"}`}
+            ${
+              activeTab === "social" ? "bg-pink-500 text-white" : "bg-gray-200"
+            }`}
         >
           Social Posts
         </button>
@@ -88,7 +119,11 @@ const Profile = ({ userData, posts, isOwner }) => {
         <button
           onClick={() => setActiveTab("market")}
           className={`px-6 py-2 rounded-xl font-semibold 
-            ${activeTab === "market" ? "bg-yellow-400 text-white" : "bg-gray-200"}`}
+            ${
+              activeTab === "market"
+                ? "bg-yellow-400 text-white"
+                : "bg-gray-200"
+            }`}
         >
           Market Posts
         </button>
@@ -96,7 +131,6 @@ const Profile = ({ userData, posts, isOwner }) => {
 
       {/* ===== POSTS LIST COMPONENT ===== */}
       <PostsList posts={postsToShow} />
-
     </div>
   );
 };

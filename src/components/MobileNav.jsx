@@ -1,10 +1,9 @@
 import { useState } from "react";
 import { HiOutlineSquares2X2 } from "react-icons/hi2";
-import { LuMessageCircleMore } from "react-icons/lu";
+import { FiMessageSquare } from "react-icons/fi";
 import { FaRegHeart } from "react-icons/fa6";
 import { IoSettingsOutline } from "react-icons/io5";
 import { MdOutlineLogout, MdClose } from "react-icons/md";
-import { IoIosAddCircleOutline } from "react-icons/io";
 import { HiMenuAlt3 } from "react-icons/hi";
 import { Link, useNavigate } from "react-router";
 import { useUser } from "../context/UserContext";
@@ -125,9 +124,9 @@ const MobileNav = () => {
                 onClick={closeMenu}
               />
               <MobileNavItem
-                to="/chat"
-                icon={<LuMessageCircleMore />}
-                label="Direct"
+                to="/chats"
+                icon={<FiMessageSquare />}
+                label="Messages"
                 onClick={closeMenu}
               />
               <MobileNavItem

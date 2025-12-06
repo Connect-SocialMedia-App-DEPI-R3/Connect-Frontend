@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { api } from "../api/axios";
-
-const defaultAvatar = "/src/assets/placeholder_avatar.jpeg";
-const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
+import { getFullAvatarUrl } from "../utils";
 
 const EditProfilePage = () => {
   const [user, setUser] = useState(null);
@@ -11,12 +9,6 @@ const EditProfilePage = () => {
 
   const [selectedAvatarFile, setSelectedAvatarFile] = useState(null);
   const [previewAvatar, setPreviewAvatar] = useState(null);
-
-  // -------- URL HANDLER --------
-  const getFullAvatarUrl = (url) => {
-    if (!url) return defaultAvatar;
-    return url.startsWith("/") ? API_BASE_URL + url : url;
-  };
 
   // -------- FETCH USER --------
   useEffect(() => {
