@@ -3,6 +3,7 @@ import { getFullAvatarUrl, isOwner } from "../utils";
 import { useComments } from "../hook";
 import { HiDotsVertical } from "react-icons/hi";
 import { MdEdit, MdDelete } from "react-icons/md";
+import { useNavigate } from "react-router";
 
 const CommentsList = ({ postId }) => {
   const { comments, loading, addComment, deleteComment, updateComment } =
@@ -11,16 +12,24 @@ const CommentsList = ({ postId }) => {
   const [editingCommentId, setEditingCommentId] = useState(null);
   const [editText, setEditText] = useState("");
   const [dropdownOpen, setDropdownOpen] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!text.trim()) return;
+    if (!text.trim() || isSubmitting) return;
 
+    setIsSubmitting(true);
     try {
+      console.log("Adding comment...");
       await addComment(text);
+      console.log("Comment added.");
       setText("");
     } catch (err) {
+      navigate(0);
       console.error("Failed to add comment:", err);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -160,13 +169,15 @@ const CommentsList = ({ postId }) => {
           placeholder="Write a comment..."
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="flex-1 border rounded-xl p-2 focus:outline-pink-400 text-sm sm:text-base"
+          disabled={isSubmitting}
+          className="flex-1 border rounded-xl p-2 focus:outline-pink-400 text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
         />
         <button
           type="submit"
-          className="bg-pink-500 text-white px-4 py-2 rounded-xl hover:bg-pink-600 transition text-sm sm:text-base"
+          disabled={isSubmitting || !text.trim()}
+          className="bg-pink-500 text-white px-4 py-2 rounded-xl hover:bg-pink-600 transition text-sm sm:text-base disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          Send
+          {isSubmitting ? "Sending..." : "Send"}
         </button>
       </form>
     </div>

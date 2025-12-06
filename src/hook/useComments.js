@@ -1,31 +1,19 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { commentApi, profileApi } from "../api";
+import { commentApi } from "../api";
+// import { useNavigate } from "react-router";
 
 export const useComments = (postId) => {
   const [comments, setComments] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
-
-  // Fetch current user profile on mount
-  useEffect(() => {
-    const fetchCurrentUser = async () => {
-      try {
-        const { data } = await profileApi.getMyProfile();
-        setCurrentUser(data);
-      } catch (error) {
-        console.error("Failed to fetch current user:", error);
-      }
-    };
-    fetchCurrentUser();
-  }, []);
+  // const navigate = useNavigate();
 
   const fetchComments = async () => {
     if (!postId) return;
     setLoading(true);
     try {
       const { data } = await commentApi.getCommentsByPostId(postId);
-      setComments(data);
+      setComments(data || []);
     } catch (error) {
       toast.error(error.response?.data?.message || "Failed to fetch comments");
     } finally {
@@ -36,22 +24,13 @@ export const useComments = (postId) => {
   const addComment = async (content) => {
     try {
       const { data } = await commentApi.createComment(postId, content);
-      
-      // Enrich comment with current user data if author is missing
-      const enrichedComment = {
-        ...data,
-        author: data.author || {
-          id: currentUser?.id,
-          username: currentUser?.username,
-          avatarUrl: currentUser?.avatarUrl,
-        },
-      };
-      
-      setComments((prev) => [...prev, enrichedComment]);
+
+      setComments((prev) => [...prev, data]);
       toast.success("Comment added successfully");
-      return enrichedComment;
+      return data;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to add comment");
+      // navigate(0);
+      // toast.error(error.response?.data?.message || "Failed to add comment");
       throw error;
     }
   };
