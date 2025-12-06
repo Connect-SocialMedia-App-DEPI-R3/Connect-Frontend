@@ -1,7 +1,9 @@
 import defaultAvatar from "../assets/placeholder_avatar.jpeg";
 
 // API Base URL
-export const API_BASE_URL = "https://connect-api-depi-r3-2025.runasp.net";
+export const API_BASE_URL =
+  import.meta.env.VITE_STORAGE_URL ||
+  "https://connect-api-depi-r3-2025.runasp.net";
 
 // ✅ Get full image URL from relative path
 export const getFullImageUrl = (url) => {
@@ -24,20 +26,19 @@ export const isAuthenticated = () => {
 };
 
 export const isOwner = (userId) => {
-    const token = localStorage.getItem("token");
-    if (!token) return false;
-    
-    try {
-        // Decode JWT token to get userId
-        const payload = JSON.parse(atob(token.split('.')[1]));
-        const tokenUserId = payload.sub;
-        return tokenUserId && String(tokenUserId) === String(userId);
-    } catch (error) {
-        console.error("Error decoding token:", error);
-        return false;
-    }
-};
+  const token = localStorage.getItem("token");
+  if (!token) return false;
 
+  try {
+    // Decode JWT token to get userId
+    const payload = JSON.parse(atob(token.split(".")[1]));
+    const tokenUserId = payload.sub;
+    return tokenUserId && String(tokenUserId) === String(userId);
+  } catch (error) {
+    console.error("Error decoding token:", error);
+    return false;
+  }
+};
 
 // ✅ Get auth token
 export const getAuthToken = () => {
@@ -56,24 +57,37 @@ export const removeAuthToken = () => {
 
 // ✅ Format date to readable string
 export const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInMs = now - date;
-    const diffInMinutes = Math.floor(diffInMs / 60000);
-    const diffInHours = Math.floor(diffInMinutes / 60);
-    const diffInDays = Math.floor(diffInHours / 24);
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffInMs = now - date;
+  const diffInMinutes = Math.floor(diffInMs / 60000);
+  const diffInHours = Math.floor(diffInMinutes / 60);
+  const diffInDays = Math.floor(diffInHours / 24);
 
-    if (diffInMinutes < 1) return "Just now";
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    if (diffInHours < 24) return `${diffInHours}h ago`;
-    if (diffInDays < 7) return `${diffInDays}d ago`;
+  if (diffInMinutes < 1) return "Just now";
+  if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+  if (diffInHours < 24) return `${diffInHours}h ago`;
+  if (diffInDays < 7) return `${diffInDays}d ago`;
 
-    const day = date.getDate();
-    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
+  const day = date.getDate();
+  const months = [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ];
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
 
-    return `${day} ${month}, ${year}`;
+  return `${day} ${month}, ${year}`;
 };
 
 // ✅ Truncate text with ellipsis

@@ -6,13 +6,30 @@ export const usePosts = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // ⭐ function تمنع ظهور توست لرسائل معينة
+  const safeToastError = (error) => {
+    const msg =
+      error.response?.data?.message ||
+      error.message ||
+      "Something went wrong";
+
+    // ❌ لو الرسالة فيها transient → لا يظهر Toast
+    if (msg.toLowerCase().includes("transient")) {
+      console.warn("Suppressed transient error:", msg);
+      return;
+    }
+
+    // ✔ غير كده → اعرض Toast
+    toast.error(msg);
+  };
+
   const fetchPosts = async () => {
     setLoading(true);
     try {
       const { data } = await postApi.getAllPosts();
       setPosts(data);
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to fetch posts");
+      safeToastError(error);
     } finally {
       setLoading(false);
     }
@@ -25,7 +42,7 @@ export const usePosts = () => {
       toast.success("Post created successfully");
       return data;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to create post");
+      safeToastError(error);
       throw error;
     }
   };
@@ -37,7 +54,7 @@ export const usePosts = () => {
       toast.success("Post updated successfully");
       return data;
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to update post");
+      safeToastError(error);
       throw error;
     }
   };
@@ -48,7 +65,7 @@ export const usePosts = () => {
       setPosts((prev) => prev.filter((p) => p.id !== id));
       toast.success("Post deleted successfully");
     } catch (error) {
-      toast.error(error.response?.data?.message || "Failed to delete post");
+      safeToastError(error);
       throw error;
     }
   };
