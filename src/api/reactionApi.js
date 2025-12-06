@@ -8,5 +8,8 @@ export const reactionApi = {
   getPostReactions: async (postId) => api.get(`/reactions/${postId}`),
 
   // Check if user has reacted to a post
-  hasUserReacted: async (postId) => api.get(`/reactions/${postId}/has-reacted`),
+  hasUserReacted: async (postId) =>
+    api.get(`/reactions/${postId}/has-reacted`, {
+      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+  }),
 };
